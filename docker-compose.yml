@@ -1,0 +1,18 @@
+version: "3"
+services:
+  app:
+    command: "tail -f /dev/null"
+    image: "openjdk"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./:/app"
+    working_dir: "/app"
+  db:
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    expose:
+      - "3306"
+    image: "mariadb"
+    volumes:
+      - "./docker-compose/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro"
