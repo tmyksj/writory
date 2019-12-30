@@ -6,15 +6,14 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "user")
-class UserEntity {
+class UserEntity(
+        var email: String? = null,
+        var password: String? = null
+) {
 
     @Id
     var id: String? = null
         private set
-
-    var email: String? = null
-
-    var password: String? = null
 
     var created: LocalDateTime? = null
         private set
