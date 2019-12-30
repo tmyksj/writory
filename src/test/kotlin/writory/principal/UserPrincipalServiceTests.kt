@@ -23,10 +23,10 @@ class UserPrincipalServiceTests {
 
     @BeforeEach
     fun savesUserEntity() {
-        userEntity = UserEntity()
-        userEntity.email = "${UUID.randomUUID()}@example.com"
-        userEntity.password = "password"
-        userRepository.save(userEntity)
+        userEntity = userRepository.save(UserEntity(
+                email = "${UUID.randomUUID()}@example.com",
+                password = "password"
+        ))
     }
 
     @Test
