@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "item_section")
-class ItemSectionEntity(
+data class ItemSectionEntity(
         var itemId: String? = null,
         var position: Int? = null,
         var header: String? = null,

@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "user")
-class UserEntity(
+data class UserEntity(
         var email: String? = null,
         var password: String? = null
 ) {
