@@ -5,10 +5,10 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "user")
-data class UserEntity(
-        var email: String? = null,
-        var password: String? = null
+@Table(name = "item")
+data class ItemEntity(
+        var userId: String? = null,
+        var title: String? = null
 ) {
 
     @Id

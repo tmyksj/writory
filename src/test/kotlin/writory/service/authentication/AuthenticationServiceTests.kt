@@ -1,20 +1,20 @@
-package writory.principal
+package writory.service.authentication
 
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import writory.entity.UserEntity
+import writory.exception.authentication.UserFoundException
 import writory.repository.UserRepository
 import java.util.*
 
 @SpringBootTest
-class UserPrincipalServiceTests {
+class AuthenticationServiceTests {
 
     @Autowired
-    private lateinit var userPrincipalService: UserPrincipalService
+    private lateinit var authenticationService: AuthenticationService
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -30,16 +30,17 @@ class UserPrincipalServiceTests {
     }
 
     @Test
-    fun loadUserByUsernameReturnsUserPrincipal() {
-        val userPrincipal: UserPrincipal? = userPrincipalService.loadUserByUsername(userEntity.email) as? UserPrincipal
-        Assertions.assertThat(userPrincipal?.userEntity?.email).isEqualTo(userEntity.email)
+    fun signUpCreatesUser() {
+        val email = "${UUID.randomUUID()}@example.com"
+        authenticationService.signUp(email, "password")
+        Assertions.assertThat(userRepository.findByEmail(email)).isNotNull
     }
 
     @Test
-    fun loadUserByUsernameThrowsUsernameNotFoundException() {
+    fun signUpFailsIfUserFound() {
         Assertions.assertThatThrownBy {
-            userPrincipalService.loadUserByUsername("${UUID.randomUUID()}@example.com")
-        }.isInstanceOf(UsernameNotFoundException::class.java)
+            authenticationService.signUp(userEntity.email!!, "password")
+        }.isInstanceOf(UserFoundException::class.java)
     }
 
 }

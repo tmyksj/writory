@@ -5,10 +5,13 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "user")
-data class UserEntity(
-        var email: String? = null,
-        var password: String? = null
+@Table(name = "item_section")
+data class ItemSectionEntity(
+        var itemId: String? = null,
+        var position: Int? = null,
+        var header: String? = null,
+        var body: String? = null,
+        var star: Boolean? = null
 ) {
 
     @Id
