@@ -15,7 +15,13 @@ class HomeController {
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             model: Model
     ): String {
-        return "home/index"
+        model.addAttribute("user", userPrincipal?.userEntity)
+
+        return if (userPrincipal == null) {
+            "home/index"
+        } else {
+            "redirect:/dashboard"
+        }
     }
 
 }
