@@ -30,13 +30,13 @@ class UserPrincipalServiceTests {
     }
 
     @Test
-    fun returnsUserPrincipal() {
+    fun loadUserByUsernameReturnsUserPrincipal() {
         val userPrincipal: UserPrincipal? = userPrincipalService.loadUserByUsername(userEntity.email) as? UserPrincipal
         Assertions.assertThat(userPrincipal?.userEntity?.email).isEqualTo(userEntity.email)
     }
 
     @Test
-    fun throwsUsernameNotFoundException() {
+    fun loadUserByUsernameThrowsUsernameNotFoundException() {
         Assertions.assertThatThrownBy {
             userPrincipalService.loadUserByUsername("${UUID.randomUUID()}@example.com")
         }.isInstanceOf(UsernameNotFoundException::class.java)
