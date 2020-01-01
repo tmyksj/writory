@@ -1,0 +1,33 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:charset="|utf-8|">
+    <title th:text="|writory|"></title>
+</head>
+<body>
+<main>
+    <form th:action="@{/sign-up}"
+          th:method="|post|"
+          th:object="${form}">
+        <div>
+            <label th:for="|email|"
+                   th:text="|メールアドレス|"></label>
+            <input th:autocomplete="|email|"
+                   th:field="*{email}"
+                   th:type="|email|">
+        </div>
+        <div>
+            <label th:for="|password|"
+                   th:text="|パスワード|"></label>
+            <input th:autocomplete="|new-password|"
+                   th:field="*{password}"
+                   th:type="|password|">
+        </div>
+        <div>
+            <button th:text="|サインアップ|"
+                    th:type="|submit|"></button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
