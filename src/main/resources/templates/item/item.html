@@ -3,17 +3,32 @@
 <head>
     <meta th:charset="|utf-8|">
     <title th:text="|writory|"></title>
+    <th:block th:replace="fragment :: meta"></th:block>
+    <th:block th:replace="fragment :: css"></th:block>
+    <th:block th:replace="fragment :: js"></th:block>
 </head>
 <body>
-<main>
-    <div>
-        <span th:text="${item.title}"></span>
+<header th:replace="fragment :: header"></header>
+<main th:class="|uk-container|"
+      th:uk-height-viewport="|expand: true|">
+    <div th:class="|uk-margin-large-top|">
+        <h2 th:class="|uk-heading-divider|"
+            th:text="${item.title}"></h2>
     </div>
-    <div th:each="section : ${itemSectionList}">
-        <span th:text="${section.header}"></span>
-        <span th:text="${section.body}"></span>
-        <span th:text="${section.star}"></span>
+    <div th:class="|uk-margin-medium|"
+         th:each="section : ${itemSectionList}">
+        <h3 th:class="|uk-heading-divider|">
+            <span th:class="|uk-margin-small-right|"
+                  th:if="${section.star}"
+                  th:uk-icon="|icon: star|"></span>
+            <span th:class="|uk-margin-small-right|"
+                  th:if="${!section.star}"
+                  th:uk-icon="|icon: minus|"></span>
+            <span th:text="${section.header}"></span>
+        </h3>
+        <div th:text="${section.body}"></div>
     </div>
 </main>
+<footer th:replace="fragment :: footer"></footer>
 </body>
 </html>
