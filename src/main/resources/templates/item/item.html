@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:charset="|utf-8|">
+    <title th:text="|writory|"></title>
+</head>
+<body>
+<main>
+    <div>
+        <span th:text="${item.title}"></span>
+    </div>
+    <div th:each="section : ${itemSectionList}">
+        <span th:text="${section.header}"></span>
+        <span th:text="${section.body}"></span>
+        <span th:text="${section.star}"></span>
+    </div>
+</main>
+</body>
+</html>
