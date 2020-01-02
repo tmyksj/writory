@@ -45,7 +45,7 @@ class ItemServiceTests {
 
         itemSectionRepository.save(ItemSectionEntity(
                 itemId = itemEntity.id,
-                position = 1,
+                position = 0,
                 header = "header",
                 body = "body",
                 star = true
@@ -53,7 +53,7 @@ class ItemServiceTests {
 
         itemSectionRepository.save(ItemSectionEntity(
                 itemId = itemEntity.id,
-                position = 2,
+                position = 1,
                 header = "header",
                 body = "body",
                 star = true

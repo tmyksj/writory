@@ -1,0 +1,59 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:charset="|utf-8|">
+    <title th:text="|writory|"></title>
+    <th:block th:fragment="meta">
+        <meta th:content="|initial-scale=1, width=device-width|"
+              th:name="|viewport|">
+    </th:block>
+    <th:block th:fragment="css">
+        <link th:href="@{//cdn.jsdelivr.net/npm/uikit@3.2.6/dist/css/uikit.min.css}"
+              th:rel="stylesheet">
+    </th:block>
+    <th:block th:fragment="js">
+        <script th:src="@{//cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit.min.js}"></script>
+        <script th:src="@{//cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit-icons.min.js}"></script>
+    </th:block>
+</head>
+<body>
+<header th:fragment="header">
+    <div th:class="|uk-background-primary uk-container uk-container-expand uk-light|">
+        <div th:class="|uk-navbar-container uk-navbar-transparent|"
+             th:uk-navbar="|uk-navbar|">
+            <div th:class="|uk-navbar-left|">
+                <h1 th:class="|uk-margin-remove|">
+                    <a th:class="|uk-logo uk-navbar-item|"
+                       th:href="@{/}"
+                       th:text="|writory|"></a>
+                </h1>
+            </div>
+            <div th:class="|uk-navbar-right|"
+                 th:if="${user} != null">
+                <div th:class="|uk-navbar-nav|">
+                    <form th:action="@{sign-out}"
+                          th:method="|post|">
+                        <button th:class="|uk-button uk-button-default|"
+                                th:type="|submit|">
+                            <span th:class="|uk-icon uk-margin-small-right|"
+                                  th:uk-icon="|icon: sign-out|"></span>
+                            <span th:text="|サインアウト|"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+</main>
+<footer th:fragment="footer">
+    <div th:class="|uk-container uk-container-expand|">
+        <div th:class="|uk-padding-small uk-text-right|">
+            <span th:class="|uk-text-muted uk-text-small|"
+                  th:text="|(c) writory|"></span>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
