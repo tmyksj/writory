@@ -40,7 +40,7 @@ class DashboardServiceTests {
     private lateinit var userEntity: UserEntity
 
     @BeforeEach
-    fun savesUserEntity() {
+    fun savesEntity() {
         userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
