@@ -8,51 +8,52 @@
               th:name="|viewport|">
     </th:block>
     <th:block th:fragment="css">
-        <link th:crossorigin="|anonymous|"
-              th:href="@{//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css}"
-              th:integrity="|sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh|"
-              th:rel="|stylesheet|">
+        <link th:href="@{//cdn.jsdelivr.net/npm/uikit@3.2.6/dist/css/uikit.min.css}"
+              th:rel="stylesheet">
     </th:block>
     <th:block th:fragment="js">
-        <script th:crossorigin="|anonymous|"
-                th:integrity="|sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n|"
-                th:src="@{//code.jquery.com/jquery-3.4.1.slim.min.js}"></script>
-        <script th:crossorigin="|anonymous|"
-                th:src="@{//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js}"
-                th:integrity="|sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo|"></script>
-        <script th:crossorigin="|anonymous|"
-                th:integrity="|sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6|"
-                th:src="@{//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+        <script th:src="@{//cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit.min.js}"></script>
+        <script th:src="@{//cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit-icons.min.js}"></script>
     </th:block>
 </head>
 <body>
 <header th:fragment="header">
-    <div th:class="|bg-light position-fixed vh-100 vw-100|"></div>
-    <div th:class="|navbar navbar-light|">
-        <a th:class="|navbar-brand|"
-           th:href="@{/}"
-           th:text="|writory|"></a>
-        <div th:if="${user} == null">
-            <a th:class="|btn btn-outline-primary btn-sm|"
-               th:href="@{/sign-in}"
-               th:text="|サインイン|"></a>
-            <a th:class="|btn btn-outline-primary btn-sm|"
-               th:href="@{/sign-up}"
-               th:text="|サインアップ|"></a>
-        </div>
-        <div th:if="${user} != null">
-            <form th:action="@{/sign-out}"
-                  th:method="|post|">
-                <button th:class="|btn btn-outline-secondary btn-sm|"
-                        th:text="|サインアウト|"
-                        th:type="|submit|"></button>
-            </form>
+    <div th:class="|uk-background-primary uk-container uk-container-expand uk-light|">
+        <div th:class="|uk-navbar-container uk-navbar-transparent|"
+             th:uk-navbar="|uk-navbar|">
+            <div th:class="|uk-navbar-left|">
+                <h1 th:class="|uk-margin-remove|">
+                    <a th:class="|uk-logo uk-navbar-item|"
+                       th:href="@{/}"
+                       th:text="|writory|"></a>
+                </h1>
+            </div>
+            <div th:class="|uk-navbar-right|"
+                 th:if="${user} != null">
+                <div th:class="|uk-navbar-nav|">
+                    <form th:action="@{sign-out}"
+                          th:method="|post|">
+                        <button th:class="|uk-button uk-button-default|"
+                                th:type="|submit|">
+                            <span th:class="|uk-icon uk-margin-small-right|"
+                                  th:uk-icon="|icon: sign-out|"></span>
+                            <span th:text="|サインアウト|"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </header>
 <main>
 </main>
 <footer th:fragment="footer">
+    <div th:class="|uk-container uk-container-expand|">
+        <div th:class="|uk-padding-small uk-text-right|">
+            <span th:class="|uk-text-muted uk-text-small|"
+                  th:text="|(c) writory|"></span>
+        </div>
+    </div>
 </footer>
 </body>
 </html>

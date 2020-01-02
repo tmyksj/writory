@@ -9,24 +9,27 @@
 </head>
 <body>
 <header th:replace="fragment :: header"></header>
-<main>
-    <div th:class="|container mt-5 pt-5|">
-        <div th:class="|mt-5 pt-5 row|">
-            <div th:class="|col mt-5 pt-5|">
-                <h1 th:text="|writory|"></h1>
-                <p th:text="|わからなくて調べたことを書く、わかったら役に立った情報を残す|"></p>
-            </div>
-        </div>
-        <div th:class="|row mt-3|">
-            <div th:class="|col|">
-                <a th:class="|btn btn-primary|"
-                   th:href="@{/sign-in}"
-                   th:text="|サインイン|"></a>
-                <a th:class="|btn btn-primary|"
-                   th:href="@{/sign-up}"
-                   th:text="|サインアップ|"></a>
-            </div>
-        </div>
+<main th:class="|uk-flex uk-flex-center uk-flex-column|"
+      th:uk-height-viewport="|expand: true|">
+    <div th:class="|uk-margin-small uk-text-center|">
+        <h1 th:class="|uk-margin-remove|"
+            th:text="|writory|"></h1>
+        <p th:class="|uk-margin-remove|"
+           th:text="|わからなくて調べたことを書く、わかったら役に立った情報を残す|"></p>
+    </div>
+    <div th:class="|uk-margin-small uk-text-center|">
+        <a th:class="|uk-button uk-button-large uk-button-secondary uk-margin-left uk-margin-right|"
+           th:href="@{/sign-up}">
+            <span th:class="|uk-icon uk-margin-small-right|"
+                  th:uk-icon="|icon: pencil|"></span>
+            <span th:text="|サインアップ|"></span>
+        </a>
+        <a th:class="|uk-button uk-button-large uk-button-primary uk-margin-left uk-margin-right|"
+           th:href="@{/sign-in}">
+            <span th:class="|uk-icon uk-margin-small-right|"
+                  th:uk-icon="|icon: sign-in|"></span>
+            <span th:text="|サインイン|"></span>
+        </a>
     </div>
 </main>
 <footer th:replace="fragment :: footer"></footer>
