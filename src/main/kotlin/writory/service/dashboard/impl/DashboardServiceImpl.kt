@@ -39,24 +39,23 @@ class DashboardServiceImpl(
     override fun modifyItem(userId: String,
                             item: Pair<String, ItemEntity>,
                             itemSectionList: List<Pair<String?, ItemSectionEntity>>) {
-        val entity: ItemEntity = itemRepository.findById(item.first).orElse(null) ?: throw ItemModifyException()
-        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemId(item.first)
-
-        if (userId != entity.userId) {
+        if (itemSectionList.map { it.second.position }.toSet().size != itemSectionList.size) {
             throw ItemModifyException()
         }
 
         val createSection: List<ItemSectionEntity> = itemSectionList.filter { it.first == null }.map { it.second }
         val modifySection: Map<String?, ItemSectionEntity> = itemSectionList.filter { it.first != null }.toMap()
 
+        val entity: ItemEntity = itemRepository.findById(item.first).orElse(null) ?: throw ItemModifyException()
+        if (userId != entity.userId) {
+            throw ItemModifyException()
+        }
+
+        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemId(item.first)
         val modifySectionEntity: List<ItemSectionEntity> =
                 sectionEntityList.filter { modifySection.containsKey(it.id) }
         val deleteSectionEntity: List<ItemSectionEntity> =
                 sectionEntityList.filter { !modifySection.containsKey(it.id) }
-
-        if (itemSectionList.map { it.second.position }.toSet().size != itemSectionList.size) {
-            throw ItemModifyException()
-        }
 
         if (modifySection.size != modifySectionEntity.size) {
             throw ItemModifyException()
