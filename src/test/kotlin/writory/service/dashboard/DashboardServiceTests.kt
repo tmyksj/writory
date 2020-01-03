@@ -33,9 +33,9 @@ class DashboardServiceTests {
 
     private lateinit var itemEntity: ItemEntity
 
-    private lateinit var itemSectionEntity1: ItemSectionEntity
+    private lateinit var itemSectionEntity0: ItemSectionEntity
 
-    private lateinit var itemSectionEntity2: ItemSectionEntity
+    private lateinit var itemSectionEntity1: ItemSectionEntity
 
     private lateinit var userEntity: UserEntity
 
@@ -51,17 +51,17 @@ class DashboardServiceTests {
                 title = "title"
         ))
 
-        itemSectionEntity1 = itemSectionRepository.save(ItemSectionEntity(
+        itemSectionEntity0 = itemSectionRepository.save(ItemSectionEntity(
                 itemId = itemEntity.id,
-                position = 1,
+                position = 0,
                 header = "header",
                 body = "body",
                 star = true
         ))
 
-        itemSectionEntity2 = itemSectionRepository.save(ItemSectionEntity(
+        itemSectionEntity1 = itemSectionRepository.save(ItemSectionEntity(
                 itemId = itemEntity.id,
-                position = 2,
+                position = 1,
                 header = "header",
                 body = "body",
                 star = true
@@ -101,16 +101,33 @@ class DashboardServiceTests {
     }
 
     @Test
-    fun modifyItemModifiesItem() {
+    fun modifyItemModifiesItem0() {
         dashboardService.modifyItem(userEntity.id!!,
                 Pair(itemEntity.id!!, itemEntity.copy(title = "title(modified)")),
-                listOf(Pair(itemSectionEntity1.id, itemSectionEntity1.copy(header = "header(modified)")),
-                        Pair(null, itemSectionEntity2.copy(header = "header(modified)"))))
+                listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
+                        Pair(null, itemSectionEntity1.copy(header = "header(modified)"))))
         Assertions.assertThat(itemRepository.findById(itemEntity.id!!).get().title)
                 .isEqualTo("title(modified)")
-        Assertions.assertThat(itemSectionRepository.findById(itemSectionEntity1.id!!).get().header)
+        Assertions.assertThat(itemSectionRepository.findById(itemSectionEntity0.id!!).get().header)
                 .isEqualTo("header(modified)")
-        Assertions.assertThat(itemSectionRepository.findById(itemSectionEntity2.id!!).isEmpty).isTrue()
+        Assertions.assertThat(itemSectionRepository.findById(itemSectionEntity1.id!!).isEmpty).isTrue()
+    }
+
+    @Test
+    fun modifyItemModifiesItem1() {
+        val itemSectionEntity2: ItemSectionEntity = itemSectionRepository.save(ItemSectionEntity(
+                itemId = itemEntity.id,
+                position = 2,
+                header = "header",
+                body = "body",
+                star = true
+        ))
+
+        dashboardService.modifyItem(userEntity.id!!,
+                Pair(itemEntity.id!!, itemEntity.copy()),
+                listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
+                        Pair(itemSectionEntity2.id, itemSectionEntity2.copy(header = "header(modified)", position = 1)),
+                        Pair(null, itemSectionEntity1.copy(header = "header(modified)", position = 2))))
     }
 
     @Test
@@ -134,19 +151,19 @@ class DashboardServiceTests {
         Assertions.assertThatThrownBy {
             dashboardService.modifyItem(userEntity.id!!,
                     Pair(itemEntity.id!!, itemEntity.copy()),
-                    listOf(Pair(UUID.randomUUID().toString(), itemSectionEntity1.copy())))
+                    listOf(Pair(UUID.randomUUID().toString(), itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
 
         Assertions.assertThatThrownBy {
             dashboardService.modifyItem(otherUserEntity.id!!,
                     Pair(itemEntity.id!!, itemEntity.copy()),
-                    listOf(Pair(itemSectionEntity1.id, itemSectionEntity1.copy())))
+                    listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
 
         Assertions.assertThatThrownBy {
             dashboardService.modifyItem(otherUserEntity.id!!,
                     Pair(otherItemEntity.id!!, otherItemEntity),
-                    listOf(Pair(itemSectionEntity1.id, itemSectionEntity1.copy())))
+                    listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
     }
 

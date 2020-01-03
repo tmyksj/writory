@@ -62,9 +62,6 @@ class DashboardServiceImpl(
             throw ItemModifyException()
         }
 
-        itemSectionRepository.deleteAll(deleteSectionEntity)
-        itemSectionRepository.flush()
-
         entity.apply {
             title = item.second.title
         }
@@ -87,6 +84,8 @@ class DashboardServiceImpl(
                 star = modifySection[it.id]?.star
             }
         }
+
+        itemSectionRepository.deleteAll(deleteSectionEntity)
     }
 
 }
