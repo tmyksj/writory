@@ -64,6 +64,7 @@ class ItemServiceTests {
     fun findItemReturnsItem() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemService.findItem(itemEntity.id!!)
         Assertions.assertThat(item.second.size).isEqualTo(2)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1))
     }
 
     @Test
