@@ -23,11 +23,6 @@
         <div th:wr-section-list="|section-list|">
             <div th:each="section, iterStat : *{sectionList}">
                 <div>
-                    <button th:text="|remove|"
-                            th:type="button"
-                            th:wr-remove="|wr-remove|"></button>
-                </div>
-                <div>
                     <input th:id="|sectionList[${iterStat.index}].id|"
                            th:name="|sectionList[${iterStat.index}].id|"
                            th:type="|hidden|"
@@ -70,10 +65,6 @@
         document.querySelector("[wr-add]").addEventListener("click", () => {
             const section = document.createElement("div");
             section.innerHTML = `<div>
-<button type="button"
-        wr-remove="wr-remove">削除</button>
-</div>
-<div>
     <label for="header[0].header">見出し</label>
     <input id="header[0].header"
            name="sectionList[0].header"
@@ -94,15 +85,14 @@
             document.querySelector("[wr-section-list]").appendChild(section);
             Array.from(document.querySelectorAll("[wr-section-list] > div")).forEach((value, index) => {
                 Array.from(value.querySelectorAll("[name]")).forEach((v) => {
+                    if (v.getAttribute("id") !== undefined) {
+                        v.setAttribute("id",
+                            v.getAttribute("id").replace(/sectionList\[\d+].(\w+)/, "sectionList[" + index + "].$1"));
+                    }
                     v.setAttribute("name",
                         v.getAttribute("name").replace(/sectionList\[\d+].(\w+)/, "sectionList[" + index + "].$1"));
                 });
             });
-        });
-        document.addEventListener("[wr-remove]", (e) => {
-            console.log(e);
-            console.log(e.parentElement.parentElement);
-            e.parentElement.parentElement.parentElement.removeChild(e.parentElement.parentElement);
         });
     })()
 </script>
