@@ -1,4 +1,4 @@
-package writory.controller.item
+package writory.application.item.controller
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -10,12 +10,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
-import writory.entity.ItemEntity
-import writory.entity.ItemSectionEntity
-import writory.entity.UserEntity
-import writory.repository.ItemRepository
-import writory.repository.ItemSectionRepository
-import writory.repository.UserRepository
+import writory.domain.item.entity.ItemEntity
+import writory.domain.item.entity.ItemSectionEntity
+import writory.domain.item.repository.ItemRepository
+import writory.domain.item.repository.ItemSectionRepository
+import writory.domain.user.entity.UserEntity
+import writory.domain.user.repository.UserRepository
 import java.util.*
 import javax.servlet.Filter
 
