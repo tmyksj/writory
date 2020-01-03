@@ -18,7 +18,7 @@ class ItemServiceImpl(
 
     override fun findItem(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
         val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
-        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemId(itemId)
+        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
         return Pair(entity, sectionEntityList)
     }
