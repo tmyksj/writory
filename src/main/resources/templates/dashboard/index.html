@@ -6,7 +6,11 @@
 </head>
 <body>
 <main>
-    <h1>dashboard/index</h1>
+    <form th:action="@{/dashboard/item}"
+          th:method="|post|">
+        <button th:text="|追加|"
+                th:type="|submit|"></button>
+    </form>
 </main>
 </body>
 </html>
