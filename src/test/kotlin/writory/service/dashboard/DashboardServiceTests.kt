@@ -37,6 +37,8 @@ class DashboardServiceTests {
 
     private lateinit var itemSectionEntity1: ItemSectionEntity
 
+    private lateinit var itemSectionEntity2: ItemSectionEntity
+
     private lateinit var userEntity: UserEntity
 
     @BeforeEach
@@ -66,6 +68,14 @@ class DashboardServiceTests {
                 body = "body",
                 star = true
         ))
+
+        itemSectionEntity2 = itemSectionRepository.save(ItemSectionEntity(
+                itemId = itemEntity.id,
+                position = 2,
+                header = "header",
+                body = "body",
+                star = true
+        ))
     }
 
     @Test
@@ -78,8 +88,8 @@ class DashboardServiceTests {
     fun findItemReturnsItem() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 dashboardService.findItem(userEntity.id!!, itemEntity.id!!)
-        Assertions.assertThat(item.second.size).isEqualTo(2)
-        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1))
+        Assertions.assertThat(item.second.size).isEqualTo(3)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
     }
 
     @Test
@@ -102,33 +112,17 @@ class DashboardServiceTests {
     }
 
     @Test
-    fun modifyItemModifiesItem0() {
+    fun modifyItemModifiesItem() {
         dashboardService.modifyItem(userEntity.id!!,
                 Pair(itemEntity.id!!, itemEntity.copy(title = "title(modified)")),
                 listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
-                        Pair(null, itemSectionEntity1.copy(header = "header(modified)"))))
+                        Pair(itemSectionEntity2.id, itemSectionEntity2.copy(header = "header(modified)", position = 1)),
+                        Pair(null, itemSectionEntity1.copy(header = "header(modified)", position = 2))))
         Assertions.assertThat(itemRepository.findById(itemEntity.id!!).get().title)
                 .isEqualTo("title(modified)")
         Assertions.assertThat(itemSectionRepository.findById(itemSectionEntity0.id!!).get().header)
                 .isEqualTo("header(modified)")
         Assertions.assertThat(itemSectionRepository.findById(itemSectionEntity1.id!!).isEmpty).isTrue()
-    }
-
-    @Test
-    fun modifyItemModifiesItem1() {
-        val itemSectionEntity2: ItemSectionEntity = itemSectionRepository.save(ItemSectionEntity(
-                itemId = itemEntity.id,
-                position = 2,
-                header = "header",
-                body = "body",
-                star = true
-        ))
-
-        dashboardService.modifyItem(userEntity.id!!,
-                Pair(itemEntity.id!!, itemEntity.copy()),
-                listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
-                        Pair(itemSectionEntity2.id, itemSectionEntity2.copy(header = "header(modified)", position = 1)),
-                        Pair(null, itemSectionEntity1.copy(header = "header(modified)", position = 2))))
     }
 
     @Test
