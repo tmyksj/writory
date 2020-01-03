@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:charset="|utf-8|">
+    <title th:text="|writory|"></title>
+    <th:block th:replace="fragment :: meta"></th:block>
+    <th:block th:replace="fragment :: css"></th:block>
+    <th:block th:replace="fragment :: js"></th:block>
+</head>
+<body>
+<header th:replace="fragment :: header"></header>
+<main th:class="|uk-flex uk-flex-center uk-flex-column|"
+      th:uk-height-viewport="|expand: true|">
+    <div th:class="|uk-margin-small uk-text-center|">
+        <h1 th:class="|uk-margin-remove|"
+            th:text="|writory|"></h1>
+        <p th:class="|uk-margin-remove|"
+           th:text="|わからなくて調べたことを書く、わかったら役に立った情報を残す|"></p>
+    </div>
+    <div th:class="|uk-margin-small uk-text-center|">
+        <a th:class="|uk-button uk-button-large uk-button-secondary uk-margin-left uk-margin-right|"
+           th:href="@{/sign-up}">
+            <span th:class="|uk-margin-small-right|"
+                  th:uk-icon="|icon: pencil|"></span>
+            <span th:text="|サインアップ|"></span>
+        </a>
+        <a th:class="|uk-button uk-button-large uk-button-primary uk-margin-left uk-margin-right|"
+           th:href="@{/sign-in}">
+            <span th:class="|uk-margin-small-right|"
+                  th:uk-icon="|icon: sign-in|"></span>
+            <span th:text="|サインイン|"></span>
+        </a>
+    </div>
+</main>
+<footer th:replace="fragment :: footer"></footer>
+</body>
+</html>
