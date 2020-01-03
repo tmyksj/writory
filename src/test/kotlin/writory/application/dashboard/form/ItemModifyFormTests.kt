@@ -1,4 +1,4 @@
-package writory.form.dashboard
+package writory.application.dashboard.form
 
 import org.springframework.boot.test.context.SpringBootTest
 

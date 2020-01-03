@@ -1,4 +1,4 @@
-package writory.controller.dashboard
+package writory.application.dashboard.controller
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -11,9 +11,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
-import writory.entity.UserEntity
-import writory.principal.UserPrincipal
-import writory.repository.UserRepository
+import writory.domain.user.entity.UserEntity
+import writory.domain.user.principal.UserPrincipal
+import writory.domain.user.repository.UserRepository
 import java.util.*
 import javax.servlet.Filter
 

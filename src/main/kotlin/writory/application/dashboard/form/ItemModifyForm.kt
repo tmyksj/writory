@@ -1,4 +1,4 @@
-package writory.form.dashboard
+package writory.application.dashboard.form
 
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
