@@ -33,7 +33,6 @@ create table item_section
     created  timestamp   not null default 0,
     modified timestamp   not null default 0,
     primary key (id),
-    foreign key (item_id) references item (id) on delete cascade on update cascade,
-    unique key (item_id, position)
+    foreign key (item_id) references item (id) on delete cascade on update cascade
 ) engine = InnoDB
   default charset utf8;
