@@ -9,4 +9,6 @@ interface ItemSectionRepository : JpaRepository<ItemSectionEntity, String> {
 
     fun findAllByItemId(itemId: String): List<ItemSectionEntity>
 
+    fun findAllByItemIdOrderByPositionAsc(itemId: String): List<ItemSectionEntity>
+
 }

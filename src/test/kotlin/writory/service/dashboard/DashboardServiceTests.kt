@@ -79,6 +79,7 @@ class DashboardServiceTests {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 dashboardService.findItem(userEntity.id!!, itemEntity.id!!)
         Assertions.assertThat(item.second.size).isEqualTo(2)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1))
     }
 
     @Test

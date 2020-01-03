@@ -27,7 +27,7 @@ class DashboardServiceImpl(
 
     override fun findItem(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
         val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
-        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemId(itemId)
+        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
         if (userId != entity.userId) {
             throw ItemPermissionException()
