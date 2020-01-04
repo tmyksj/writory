@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import writory.domain.item.ItemDomain
 import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
+import writory.domain.item.exception.ItemNotFoundException
 import writory.domain.user.principal.UserPrincipal
 
 @Controller
@@ -24,9 +25,14 @@ class ItemController(
     ): String {
         model.addAttribute("user", userPrincipal?.userEntity)
 
-        val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.find(id)
-        model.addAttribute("item", item.first)
-        model.addAttribute("itemSectionList", item.second)
+        try {
+            val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.find(id)
+            model.addAttribute("itemFound", true)
+            model.addAttribute("item", item.first)
+            model.addAttribute("itemSectionList", item.second)
+        } catch (e: ItemNotFoundException) {
+            model.addAttribute("itemFound", false)
+        }
 
         return "item/item"
     }
