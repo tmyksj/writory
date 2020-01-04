@@ -3,98 +3,235 @@
 <head>
     <meta th:charset="|utf-8|">
     <title th:text="|writory|"></title>
+    <th:block th:replace="fragment :: meta"></th:block>
+    <th:block th:replace="fragment :: css"></th:block>
+    <th:block th:replace="fragment :: js"></th:block>
 </head>
 <body>
-<main>
-    <form th:action="@{/dashboard/item/{id}(id=${form.id})}"
-          th:method="|post|"
-          th:object="${form}">
-        <div>
-            <label th:for="|title|"
-                   th:text="|タイトル|"></label>
-            <input th:field="*{title}"
-                   th:type="|text|">
-        </div>
-        <div>
-            <button th:text="|追加|"
-                    th:type="button"
-                    th:wr-add="|wr-add|"></button>
-        </div>
-        <div th:wr-section-list="|section-list|">
-            <div th:each="section, iterStat : *{sectionList}">
-                <div>
-                    <input th:id="|sectionList[${iterStat.index}].id|"
-                           th:name="|sectionList[${iterStat.index}].id|"
-                           th:type="|hidden|"
-                           th:value="${section.id}">
+<header th:replace="fragment :: header"></header>
+<main th:class="|uk-container|"
+      th:uk-height-viewport="|expand: true|">
+    <div th:class="|uk-flex|">
+        <div th:class="|uk-flex-1|">
+            <form th:action="@{/dashboard/item/{id}(id=${form.id})}"
+                  th:class="|uk-form-stacked|"
+                  th:method="|post|"
+                  th:object="${form}">
+                <div th:class="|uk-margin uk-margin-large-top|">
+                    <label th:class="|uk-form-label|"
+                           th:for="|title|"
+                           th:text="|タイトル|"></label>
+                    <div th:class="|uk-form-controls|">
+                        <input th:autofocus="|autofocus|"
+                               th:class="|uk-input|"
+                               th:field="*{title}"
+                               th:type="|text|">
+                    </div>
                 </div>
-                <div>
-                    <label th:for="|sectionList[${iterStat.index}].header|"
-                           th:text="|見出し|"></label>
-                    <input th:id="|sectionList[${iterStat.index}].header|"
-                           th:name="|sectionList[${iterStat.index}].header|"
-                           th:type="|text|"
-                           th:value="${section.header}">
+                <hr>
+                <div th:uk-sortable="|handle: .uk-margin|"
+                     th:wr-section-list="|section-list|">
+                    <div th:class="|uk-margin|"
+                         th:each="section, iterStat : *{sectionList}">
+                        <input th:id="|sectionList[${iterStat.index}].id|"
+                               th:name="|sectionList[${iterStat.index}].id|"
+                               th:type="|hidden|"
+                               th:value="${section.id}">
+                        <div th:class="|uk-flex uk-flex-bottom uk-margin-small|">
+                            <div th:class="|uk-flex-1 uk-margin-right|">
+                                <label th:class="|uk-form-label|"
+                                       th:for="|sectionList[${iterStat.index}].header|"
+                                       th:text="|見出し|"></label>
+                                <div th:class="|uk-form-controls|">
+                                    <input th:class="|uk-input|"
+                                           th:id="|sectionList[${iterStat.index}].header|"
+                                           th:name="|sectionList[${iterStat.index}].header|"
+                                           th:type="|text|"
+                                           th:value="${section.header}">
+                                </div>
+                            </div>
+                            <div th:class="|uk-auto uk-margin-right|">
+                                <input th:id="|sectionList[${iterStat.index}].star|"
+                                       th:name="|sectionList[${iterStat.index}].star|"
+                                       th:type="|hidden|"
+                                       th:value="${section.star}">
+                                <button th:class="|uk-button uk-button-default|"
+                                        th:type="|button|"
+                                        th:wr-star="|wr-star|">
+                                    <span th:uk-icon="|icon: star|"
+                                          th:if="${section.star}"></span>
+                                    <span th:uk-icon="|icon: minus|"
+                                          th:if="${!section.star}"></span>
+                                </button>
+                            </div>
+                            <div th:class="|uk-auto|">
+                                <button th:class="|uk-button uk-button-danger|"
+                                        th:type="|button|"
+                                        th:wr-delete="|wr-delete|">
+                                    <span th:uk-icon="|icon: close|"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div th:class="|uk-margin-small|">
+                            <label th:class="|uk-form-label|"
+                                   th:for="|sectionList[${iterStat.index}].body|"
+                                   th:text="|本文|"></label>
+                            <div th:class="|uk-form-controls|">
+                                <textarea th:class="|uk-resize-vertical uk-textarea|"
+                                          th:id="|sectionList[${iterStat.index}].body|"
+                                          th:name="|sectionList[${iterStat.index}].body|"
+                                          th:rows="|10|"
+                                          th:text="${section.body}"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label th:for="|sectionList[${iterStat.index}].body|"
-                           th:text="|本文|"></label>
-                    <input th:id="|sectionList[${iterStat.index}].body|"
-                           th:name="|sectionList[${iterStat.index}].body|"
-                           th:type="|text|"
-                           th:value="${section.body}">
+                <hr>
+                <div th:class="|uk-margin|">
+                    <div th:class="|uk-text-right|">
+                        <button th:class="|uk-button uk-button-primary|"
+                                th:text="|新しいセクション|"
+                                th:type="|button|"
+                                th:wr-add="|wr-add|"></button>
+                    </div>
                 </div>
-                <div>
-                    <label th:for="|sectionList[${iterStat.index}].star|"
-                           th:text="|お気に入り|"></label>
-                    <input th:id="|sectionList[${iterStat.index}].star|"
-                           th:name="|sectionList[${iterStat.index}].star|"
-                           th:type="|checkbox|"
-                           th:value="|${section.star}|">
+                <hr>
+                <div th:class="|uk-margin|">
+                    <div th:class="|uk-text-right|">
+                        <button th:class="|uk-button uk-button-primary|"
+                                th:text="|更新|"
+                                th:type="|submit|"></button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-        <div>
-            <button th:text="|追加|"
-                    th:type="|submit|"></button>
-        </div>
-    </form>
+    </div>
 </main>
+<footer th:replace="fragment :: footer"></footer>
 <script th:inline="javascript">
     (() => {
-        document.querySelector("[wr-add]").addEventListener("click", () => {
-            const section = document.createElement("div");
-            section.innerHTML = `<div>
-    <label for="header[0].header">見出し</label>
-    <input id="header[0].header"
-           name="sectionList[0].header"
-           type="text">
+        const fun = {
+            add: (source) => {
+                const target = fun.findTarget(source, "[wr-add]");
+                if (target === null) {
+                    return;
+                }
+
+                const section = document.createElement("div");
+                section.innerHTML = `<div class="uk-margin">
+<div class="uk-flex uk-flex-bottom uk-margin-small">
+    <div class="uk-flex-1 uk-margin-right">
+        <label class="uk-form-label"
+               for="sectionList[65535].header">見出し</label>
+        <div class="uk-form-controls">
+            <input class="uk-input"
+                   id="sectionList[65535].header"
+                   name="sectionList[65535].header"
+                   type="text">
+        </div>
+    </div>
+    <div class="uk-auto uk-margin-right">
+        <input id="sectionList[65535].star"
+               name="sectionList[65535].star"
+               type="hidden"
+               value="false">
+        <button class="uk-button uk-button-default"
+                type="button"
+                wr-star="wr-star">
+            <span uk-icon="icon: minus"></span>
+        </button>
+    </div>
+    <div class="uk-auto">
+        <button class="uk-button uk-button-danger"
+                type="button"
+                wr-delete="wr-delete">
+            <span uk-icon="icon: close"></span>
+        </button>
+    </div>
 </div>
-<div>
-    <label for="sectionList[0].body">本文</label>
-    <input id="sectionList[0].body"
-           name="sectionList[0].body"
-           type="text">
+<div class="uk-margin-small">
+    <label class="uk-form-label"
+           for="sectionList[65535].body">本文</label>
+    <div class="uk-form-controls">
+        <textarea class="uk-resize-vertical uk-textarea"
+                  id="sectionList[65535].body"
+                  name="sectionList[65535].body"
+                  rows="10"></textarea>
+    </div>
 </div>
-<div>
-    <label for="sectionList[0].star">お気に入り</label>
-    <input id="sectionList[0].star"
-           name="sectionList[0].star"
-           type="checkbox">
 </div>`;
-            document.querySelector("[wr-section-list]").appendChild(section);
-            Array.from(document.querySelectorAll("[wr-section-list] > div")).forEach((value, index) => {
-                Array.from(value.querySelectorAll("[name]")).forEach((v) => {
-                    if (v.getAttribute("id") !== undefined) {
-                        v.setAttribute("id",
-                            v.getAttribute("id").replace(/sectionList\[\d+].(\w+)/, "sectionList[" + index + "].$1"));
+                document.querySelector("[wr-section-list]").appendChild(section);
+                fun.reorder();
+            },
+            delete: (source) => {
+                const target = fun.findTarget(source, "[wr-delete]");
+                if (target === null) {
+                    return;
+                }
+
+                target.parentElement.parentElement.parentElement.remove();
+                fun.reorder();
+            },
+            findTarget: (source, selector) => {
+                for (; source.parentElement !== null; source = source.parentElement) {
+                    if (source.matches(selector)) {
+                        return source;
                     }
-                    v.setAttribute("name",
-                        v.getAttribute("name").replace(/sectionList\[\d+].(\w+)/, "sectionList[" + index + "].$1"));
+                }
+                return null;
+            },
+            move: (source) => {
+                const target = fun.findTarget(source, "[wr-section-list]");
+                if (target === null) {
+                    return;
+                }
+
+                fun.reorder();
+            },
+            star: (source) => {
+                const target = fun.findTarget(source, "[wr-star]");
+                if (target === null) {
+                    return;
+                }
+
+                if (target.previousElementSibling.value === "true") {
+                    target.previousElementSibling.value = "false";
+                    target.querySelector("[uk-icon]").setAttribute("uk-icon", "icon: minus");
+                } else {
+                    target.previousElementSibling.value = "true";
+                    target.querySelector("[uk-icon]").setAttribute("uk-icon", "icon: star");
+                }
+            },
+            reorder: () => {
+                Array.from(document.querySelectorAll("[wr-section-list] > div")).forEach((div, index) => {
+                    ["for", "id", "name"].forEach((attr) => {
+                        Array.from(div.querySelectorAll("[" + attr + "]")).forEach((element) => {
+                            element.setAttribute(attr, element.getAttribute(attr).replace(
+                                /sectionList\[\d+].(\w+)/, "sectionList[" + index + "].$1"));
+                        });
+                    });
                 });
+            },
+        };
+
+        document.querySelector("body").addEventListener("click", (event) => {
+            [
+                fun.add,
+                fun.delete,
+                fun.star,
+            ].forEach((value) => {
+                value(event.target);
             });
         });
-    })()
+
+        document.querySelector("body").addEventListener("moved", (event) => {
+            [
+                fun.move,
+            ].forEach((value) => {
+                value(event.target);
+            });
+        });
+    })();
 </script>
 </body>
 </html>
