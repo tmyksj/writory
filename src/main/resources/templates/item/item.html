@@ -17,14 +17,15 @@
     </div>
     <div th:class="|uk-margin-medium|"
          th:each="section : ${itemSectionList}">
-        <h3 th:class="|uk-heading-divider|">
-            <span th:class="|uk-margin-small-right|"
+        <h3 th:class="|uk-heading-divider uk-flex uk-flex-bottom|">
+            <span th:class="|uk-flex-1|"
+                  th:text="${section.header}"></span>
+            <span th:class="|uk-flex-none|"
                   th:if="${section.star}"
                   th:uk-icon="|icon: star|"></span>
-            <span th:class="|uk-margin-small-right|"
+            <span th:class="|uk-flex-none|"
                   th:if="${!section.star}"
                   th:uk-icon="|icon: minus|"></span>
-            <span th:text="${section.header}"></span>
         </h3>
         <div th:text="${section.body}"></div>
     </div>
