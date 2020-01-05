@@ -80,9 +80,9 @@ class ItemDomainTests {
 
     @Test
     fun findItemReturnsItem() {
-        val item0: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(itemEntity.id!!)
-        Assertions.assertThat(item0.second.size).isEqualTo(3)
-        Assertions.assertThat(item0.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
+        val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(itemEntity.id!!)
+        Assertions.assertThat(item.second.size).isEqualTo(3)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
     }
 
     @Test
@@ -100,10 +100,10 @@ class ItemDomainTests {
 
     @Test
     fun withUserIdFindItemReturnsItem() {
-        val item1: Pair<ItemEntity, List<ItemSectionEntity>> =
+        val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 itemDomain.withUserIdFindById(userEntity.id!!, itemEntity.id!!)
-        Assertions.assertThat(item1.second.size).isEqualTo(3)
-        Assertions.assertThat(item1.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
+        Assertions.assertThat(item.second.size).isEqualTo(3)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
     }
 
     @Test
