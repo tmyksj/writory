@@ -9,7 +9,6 @@ import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
 import writory.domain.item.exception.ItemNotFoundException
-import writory.domain.item.exception.ItemPermissionException
 import writory.domain.item.repository.ItemRepository
 import writory.domain.item.repository.ItemSectionRepository
 import writory.domain.user.entity.UserEntity
@@ -94,40 +93,37 @@ class ItemDomainTests {
 
     @Test
     fun withUserIdCreateCreatesItem() {
-        val itemEntity: ItemEntity = itemDomain.withUserIdCreate(userEntity.id!!)
+        val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userEntity.id!!)
         Assertions.assertThat(itemRepository.findById(itemEntity.id!!)).isNotNull
     }
 
     @Test
     fun withUserIdFindItemReturnsItem() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
-                itemDomain.withUserIdFindById(userEntity.id!!, itemEntity.id!!)
+                itemDomain.scopeByUserIdFindById(userEntity.id!!, itemEntity.id!!)
         Assertions.assertThat(item.second.size).isEqualTo(3)
         Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
     }
 
     @Test
     fun withUserIdFindItemThrowsItemNotFoundException() {
-        Assertions.assertThatThrownBy {
-            itemDomain.withUserIdFindById(userEntity.id!!, UUID.randomUUID().toString())
-        }.isInstanceOf(ItemNotFoundException::class.java)
-    }
-
-    @Test
-    fun withUserIdFindItemThrowsItemPermissionException() {
         val otherUserEntity: UserEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
         ))
 
         Assertions.assertThatThrownBy {
-            itemDomain.withUserIdFindById(otherUserEntity.id!!, itemEntity.id!!)
-        }.isInstanceOf(ItemPermissionException::class.java)
+            itemDomain.scopeByUserIdFindById(userEntity.id!!, UUID.randomUUID().toString())
+        }.isInstanceOf(ItemNotFoundException::class.java)
+
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdFindById(otherUserEntity.id!!, itemEntity.id!!)
+        }.isInstanceOf(ItemNotFoundException::class.java)
     }
 
     @Test
     fun withUserIdModifyItemModifiesItem() {
-        itemDomain.withUserIdModify(userEntity.id!!,
+        itemDomain.scopeByUserIdModify(userEntity.id!!,
                 Pair(itemEntity.id!!, itemEntity.copy(title = "title(modified)")),
                 listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
                         Pair(itemSectionEntity2.id, itemSectionEntity2.copy(header = "header(modified)", position = 1)),
@@ -152,25 +148,25 @@ class ItemDomainTests {
         ))
 
         Assertions.assertThatThrownBy {
-            itemDomain.withUserIdModify(userEntity.id!!,
+            itemDomain.scopeByUserIdModify(userEntity.id!!,
                     Pair(UUID.randomUUID().toString(), itemEntity.copy()),
                     listOf())
         }.isInstanceOf(ItemModifyException::class.java)
 
         Assertions.assertThatThrownBy {
-            itemDomain.withUserIdModify(userEntity.id!!,
+            itemDomain.scopeByUserIdModify(userEntity.id!!,
                     Pair(itemEntity.id!!, itemEntity.copy()),
                     listOf(Pair(UUID.randomUUID().toString(), itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
 
         Assertions.assertThatThrownBy {
-            itemDomain.withUserIdModify(otherUserEntity.id!!,
+            itemDomain.scopeByUserIdModify(otherUserEntity.id!!,
                     Pair(itemEntity.id!!, itemEntity.copy()),
                     listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
 
         Assertions.assertThatThrownBy {
-            itemDomain.withUserIdModify(otherUserEntity.id!!,
+            itemDomain.scopeByUserIdModify(otherUserEntity.id!!,
                     Pair(otherItemEntity.id!!, otherItemEntity),
                     listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)

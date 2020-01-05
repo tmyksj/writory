@@ -7,12 +7,12 @@ interface ItemDomain {
 
     fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
-    fun withUserIdCreate(userId: String): ItemEntity
+    fun scopeByUserIdCreate(userId: String): ItemEntity
 
-    fun withUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
+    fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
-    fun withUserIdModify(userId: String,
-                         item: Pair<String, ItemEntity>,
-                         itemSectionList: List<Pair<String?, ItemSectionEntity>>)
+    fun scopeByUserIdModify(userId: String,
+                            item: Pair<String, ItemEntity>,
+                            itemSectionList: List<Pair<String?, ItemSectionEntity>>)
 
 }
