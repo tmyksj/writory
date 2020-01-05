@@ -10,7 +10,7 @@ create table user
 ) engine = InnoDB
   default charset utf8;
 
-create table profile
+create table user_profile
 (
     user_id          varchar(36) not null,
     username         varchar(255),

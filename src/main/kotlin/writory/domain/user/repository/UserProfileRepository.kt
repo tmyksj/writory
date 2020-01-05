@@ -2,7 +2,7 @@ package writory.domain.user.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import writory.domain.user.entity.ProfileEntity
+import writory.domain.user.entity.UserProfileEntity
 
 @Repository
-interface ProfileRepository : JpaRepository<ProfileEntity, String>
+interface UserProfileRepository : JpaRepository<UserProfileEntity, String>

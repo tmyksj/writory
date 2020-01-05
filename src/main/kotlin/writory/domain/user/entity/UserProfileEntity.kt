@@ -4,8 +4,8 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "profile")
-data class ProfileEntity(
+@Table(name = "user_profile")
+data class UserProfileEntity(
         @Id var userId: String? = null,
         var username: String? = null,
         var description: String? = null,
