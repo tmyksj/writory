@@ -12,14 +12,14 @@ create table user
 
 create table profile
 (
-    id               varchar(36) not null,
+    user_id          varchar(36) not null,
     username         varchar(255),
     description      text,
     link             varchar(255),
     external_github  varchar(255),
     external_twitter varchar(255),
-    primary key (id),
-    foreign key (id) references user (id) on delete cascade on update cascade
+    primary key (user_id),
+    foreign key (user_id) references user (id) on delete cascade on update cascade
 ) engine = InnoDB
   default charset utf8;
 
