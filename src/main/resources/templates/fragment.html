@@ -25,6 +25,11 @@
                 <h1 th:class="|uk-margin-remove|">
                     <a th:class="|uk-logo uk-navbar-item|"
                        th:href="@{/}"
+                       th:if="${user} == null"
+                       th:text="|writory|"></a>
+                    <a th:class="|uk-logo uk-navbar-item|"
+                       th:href="@{/dashboard}"
+                       th:if="${user} != null"
                        th:text="|writory|"></a>
                 </h1>
             </div>
