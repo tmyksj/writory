@@ -78,27 +78,27 @@ class ItemDomainTests {
     }
 
     @Test
-    fun findItemReturnsItem() {
+    fun findByIdReturnsItem() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(itemEntity.id!!)
         Assertions.assertThat(item.second.size).isEqualTo(3)
         Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
     }
 
     @Test
-    fun findItemThrowsItemNotFoundException() {
+    fun findByIdThrowsItemNotFoundException() {
         Assertions.assertThatThrownBy {
             itemDomain.findById(UUID.randomUUID().toString())
         }.isInstanceOf(ItemNotFoundException::class.java)
     }
 
     @Test
-    fun withUserIdCreateCreatesItem() {
+    fun scopeByUserIdCreateCreatesItem() {
         val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userEntity.id!!)
         Assertions.assertThat(itemRepository.findById(itemEntity.id!!)).isNotNull
     }
 
     @Test
-    fun withUserIdFindItemReturnsItem() {
+    fun scopeByUserIdFindByIdReturnsItem() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 itemDomain.scopeByUserIdFindById(userEntity.id!!, itemEntity.id!!)
         Assertions.assertThat(item.second.size).isEqualTo(3)
@@ -106,7 +106,7 @@ class ItemDomainTests {
     }
 
     @Test
-    fun withUserIdFindItemThrowsItemNotFoundException() {
+    fun scopeByUserIdFindByIdThrowsItemNotFoundException() {
         val otherUserEntity: UserEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
@@ -122,7 +122,7 @@ class ItemDomainTests {
     }
 
     @Test
-    fun withUserIdModifyItemModifiesItem() {
+    fun scopeByUserIdModifyModifiesItem() {
         itemDomain.scopeByUserIdModify(userEntity.id!!,
                 Pair(itemEntity.id!!, itemEntity.copy(title = "title(modified)")),
                 listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
@@ -136,7 +136,7 @@ class ItemDomainTests {
     }
 
     @Test
-    fun withUserIdModifyItemThrowsItemModifyException() {
+    fun scopeByUserIdModifyThrowsItemModifyException() {
         val otherUserEntity: UserEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
