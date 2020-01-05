@@ -25,7 +25,20 @@ class DashboardController(
             model: Model
     ): String {
         model.addAttribute("user", userPrincipal.userEntity)
-        return "dashboard/index"
+        return "redirect:/dashboard/item"
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item"])
+    fun item(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            model: Model
+    ): String {
+        model.addAttribute("user", userPrincipal.userEntity)
+
+        val itemEntityList: List<ItemEntity> = itemDomain.withUserIdFindAllByUserId(userPrincipal.userEntity.id!!)
+        model.addAttribute("itemList", itemEntityList)
+
+        return "dashboard/item"
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item"])

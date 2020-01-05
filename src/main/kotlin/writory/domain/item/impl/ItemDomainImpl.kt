@@ -33,6 +33,10 @@ class ItemDomainImpl(
         ))
     }
 
+    override fun withUserIdFindAllByUserId(userId: String): List<ItemEntity> {
+        return itemRepository.findAllByUserId(userId)
+    }
+
     override fun withUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
         val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
         val sectionEntityList: List<ItemSectionEntity> =

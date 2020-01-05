@@ -9,6 +9,8 @@ interface ItemDomain {
 
     fun withUserIdCreate(userId: String): ItemEntity
 
+    fun withUserIdFindAllByUserId(userId: String): List<ItemEntity>
+
     fun withUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
     fun withUserIdModify(userId: String,
