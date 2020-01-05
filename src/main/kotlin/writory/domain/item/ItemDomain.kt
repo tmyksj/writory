@@ -5,12 +5,14 @@ import writory.domain.item.entity.ItemSectionEntity
 
 interface ItemDomain {
 
-    fun create(userId: String): ItemEntity
+    fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
-    fun find(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
+    fun withUserIdCreate(userId: String): ItemEntity
 
-    fun find(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
+    fun withUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
-    fun modify(userId: String, item: Pair<String, ItemEntity>, itemSectionList: List<Pair<String?, ItemSectionEntity>>)
+    fun withUserIdModify(userId: String,
+                         item: Pair<String, ItemEntity>,
+                         itemSectionList: List<Pair<String?, ItemSectionEntity>>)
 
 }
