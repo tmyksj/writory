@@ -18,6 +18,14 @@
                   th:method="|post|"
                   th:object="${form}">
                 <div th:class="|uk-margin uk-margin-large-top|">
+                    <div th:class="|uk-text-right|">
+                        <button th:class="|uk-button uk-button-primary|"
+                                th:text="|更新|"
+                                th:type="|submit|"></button>
+                    </div>
+                </div>
+                <hr>
+                <div th:class="|uk-margin|">
                     <label th:class="|uk-form-label|"
                            th:for="|title|"
                            th:text="|タイトル|"></label>
@@ -84,23 +92,15 @@
                                           th:text="${section.body}"></textarea>
                             </div>
                         </div>
+                        <hr>
                     </div>
                 </div>
-                <hr>
                 <div th:class="|uk-margin|">
                     <div th:class="|uk-text-right|">
                         <button th:class="|uk-button uk-button-primary|"
                                 th:text="|新しいセクション|"
                                 th:type="|button|"
                                 th:wr-add="|wr-add|"></button>
-                    </div>
-                </div>
-                <hr>
-                <div th:class="|uk-margin|">
-                    <div th:class="|uk-text-right|">
-                        <button th:class="|uk-button uk-button-primary|"
-                                th:text="|更新|"
-                                th:type="|submit|"></button>
                     </div>
                 </div>
             </form>
@@ -159,6 +159,7 @@
                   rows="10"></textarea>
     </div>
 </div>
+<hr>
 </div>`;
                 document.querySelector("[wr-section-list]").appendChild(section);
                 fun.reorder();
