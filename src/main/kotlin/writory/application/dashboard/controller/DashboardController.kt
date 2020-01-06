@@ -47,7 +47,7 @@ class DashboardController(
             model: Model
     ): String {
         model.addAttribute("user", userPrincipal.userEntity)
-        val itemEntity: ItemEntity = itemDomain.withUserIdCreate(userPrincipal.userEntity.id!!)
+        val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userPrincipal.userEntity.id!!)
         return "redirect:/dashboard/item/${itemEntity.id}"
     }
 
@@ -61,7 +61,7 @@ class DashboardController(
         model.addAttribute("form", form)
 
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
-                itemDomain.withUserIdFindById(userPrincipal.userEntity.id!!, form.id!!)
+                itemDomain.scopeByUserIdFindById(userPrincipal.userEntity.id!!, form.id!!)
 
         if (form.title == null) {
             form.title = item.first.title
@@ -96,7 +96,7 @@ class DashboardController(
         }
 
         return try {
-            itemDomain.withUserIdModify(userPrincipal.userEntity.id!!,
+            itemDomain.scopeByUserIdModify(userPrincipal.userEntity.id!!,
                     Pair(form.id!!, ItemEntity(title = form.title)),
                     form.sectionList?.mapIndexed { index: Int, section: ItemModifyForm.Section ->
                         Pair(section.id, ItemSectionEntity(

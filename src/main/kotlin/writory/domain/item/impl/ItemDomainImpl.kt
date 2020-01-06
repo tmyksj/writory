@@ -8,7 +8,6 @@ import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
 import writory.domain.item.exception.ItemNotFoundException
-import writory.domain.item.exception.ItemPermissionException
 import writory.domain.item.repository.ItemRepository
 import writory.domain.item.repository.ItemSectionRepository
 
@@ -26,7 +25,7 @@ class ItemDomainImpl(
         return Pair(entity, sectionEntityList)
     }
 
-    override fun withUserIdCreate(userId: String): ItemEntity {
+    override fun scopeByUserIdCreate(userId: String): ItemEntity {
         return itemRepository.save(ItemEntity(
                 userId = userId,
                 title = ""
@@ -37,21 +36,20 @@ class ItemDomainImpl(
         return itemRepository.findAllByUserId(userId)
     }
 
-    override fun withUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
+    override fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
         val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
-        val sectionEntityList: List<ItemSectionEntity> =
-                itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
+        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
         if (userId != entity.userId) {
-            throw ItemPermissionException()
+            throw ItemNotFoundException()
         }
 
         return Pair(entity, sectionEntityList)
     }
 
-    override fun withUserIdModify(userId: String,
-                                  item: Pair<String, ItemEntity>,
-                                  itemSectionList: List<Pair<String?, ItemSectionEntity>>) {
+    override fun scopeByUserIdModify(userId: String,
+                                     item: Pair<String, ItemEntity>,
+                                     itemSectionList: List<Pair<String?, ItemSectionEntity>>) {
         if (itemSectionList.map { it.second.position }.toSet().size != itemSectionList.size) {
             throw ItemModifyException()
         }
