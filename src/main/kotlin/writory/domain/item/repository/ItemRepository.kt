@@ -7,6 +7,6 @@ import writory.domain.item.entity.ItemEntity
 @Repository
 interface ItemRepository : JpaRepository<ItemEntity, String> {
 
-    fun findAllByUserId(userId: String): List<ItemEntity>
+    fun findAllByUserIdOrderByModifiedDesc(userId: String): List<ItemEntity>
 
 }

@@ -30,15 +30,15 @@
         <div th:class="|uk-width-1-1 uk-width-1-2@m|"
              th:each="item : ${itemList}">
             <div th:class="|uk-card uk-card-body uk-card-default uk-card-small|">
-                <h3 th:class="|uk-margin-remove|"
+                <h3 th:class="|uk-margin-remove uk-text-truncate|"
                     th:if="${item.title} == ''"
                     th:text="|&nbsp;|"></h3>
-                <h3 th:class="|uk-margin-remove|"
+                <h3 th:class="|uk-margin-remove uk-text-truncate|"
                     th:if="${item.title} != ''"
                     th:text="${item.title}"></h3>
-                <span th:class="|uk-text-meta|"
-                      th:text="${item.id}"></span>
-                <div th:class="|uk-text-right|">
+                <div th:class="|uk-flex uk-flex-between uk-flex-bottom uk-text-right|">
+                    <span th:class="|uk-text-meta|"
+                          th:text="${#temporals.format(item.modified, 'yyyy/MM/dd HH:mm')}"></span>
                     <div th:class="|uk-button-group|">
                         <a th:class="|uk-button uk-button-default uk-button-small|"
                            th:href="@{/item/{id}(id=${item.id})}"

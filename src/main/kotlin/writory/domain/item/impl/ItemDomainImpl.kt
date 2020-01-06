@@ -33,7 +33,7 @@ class ItemDomainImpl(
     }
 
     override fun scopeByUserIdFindAllByUserId(userId: String): List<ItemEntity> {
-        return itemRepository.findAllByUserId(userId)
+        return itemRepository.findAllByUserIdOrderByModifiedDesc(userId)
     }
 
     override fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
