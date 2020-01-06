@@ -26,7 +26,7 @@ class ItemController(
         model.addAttribute("user", userPrincipal?.userEntity)
 
         try {
-            val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.find(id)
+            val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(id)
             model.addAttribute("itemFound", true)
             model.addAttribute("item", item.first)
             model.addAttribute("itemSectionList", item.second)
