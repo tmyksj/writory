@@ -35,7 +35,7 @@ class DashboardController(
     ): String {
         model.addAttribute("user", userPrincipal.userEntity)
 
-        val itemEntityList: List<ItemEntity> = itemDomain.withUserIdFindAllByUserId(userPrincipal.userEntity.id!!)
+        val itemEntityList: List<ItemEntity> = itemDomain.scopeByUserIdFindAllByUserId(userPrincipal.userEntity.id!!)
         model.addAttribute("itemList", itemEntityList)
 
         return "dashboard/item"

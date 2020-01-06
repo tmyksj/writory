@@ -32,7 +32,7 @@ class ItemDomainImpl(
         ))
     }
 
-    override fun withUserIdFindAllByUserId(userId: String): List<ItemEntity> {
+    override fun scopeByUserIdFindAllByUserId(userId: String): List<ItemEntity> {
         return itemRepository.findAllByUserId(userId)
     }
 

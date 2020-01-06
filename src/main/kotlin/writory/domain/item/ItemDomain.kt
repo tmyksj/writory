@@ -5,11 +5,11 @@ import writory.domain.item.entity.ItemSectionEntity
 
 interface ItemDomain {
 
-    fun withUserIdFindAllByUserId(userId: String): List<ItemEntity>
-
     fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
     fun scopeByUserIdCreate(userId: String): ItemEntity
+
+    fun scopeByUserIdFindAllByUserId(userId: String): List<ItemEntity>
 
     fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
