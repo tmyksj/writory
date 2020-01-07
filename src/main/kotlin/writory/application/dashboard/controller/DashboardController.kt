@@ -24,7 +24,6 @@ class DashboardController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
         return "dashboard/index"
     }
 
@@ -33,7 +32,6 @@ class DashboardController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
         val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userPrincipal.userEntity.id!!)
         return "redirect:/dashboard/item/${itemEntity.id}"
     }
@@ -44,9 +42,6 @@ class DashboardController(
             form: ItemModifyForm,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
-        model.addAttribute("form", form)
-
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 itemDomain.scopeByUserIdFindById(userPrincipal.userEntity.id!!, form.id!!)
 
@@ -75,9 +70,6 @@ class DashboardController(
             bindingResult: BindingResult,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
-        model.addAttribute("form", form)
-
         if (bindingResult.hasErrors()) {
             return "dashboard/item-modify"
         }

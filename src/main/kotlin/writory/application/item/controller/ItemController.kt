@@ -23,8 +23,6 @@ class ItemController(
             @PathVariable id: String,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal?.userEntity)
-
         try {
             val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(id)
             model.addAttribute("itemFound", true)
