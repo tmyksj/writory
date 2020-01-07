@@ -23,9 +23,6 @@ class ItemController(
             form: ItemForm,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal?.userEntity)
-        model.addAttribute("form", form)
-
         try {
             val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(form.id!!)
             model.addAttribute("itemFound", true)

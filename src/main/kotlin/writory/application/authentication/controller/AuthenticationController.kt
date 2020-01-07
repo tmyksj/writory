@@ -22,8 +22,6 @@ class AuthenticationController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal?.userEntity)
-
         return if (userPrincipal == null) {
             "authentication/sign-in"
         } else {
@@ -37,9 +35,6 @@ class AuthenticationController(
             form: SignUpForm,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal?.userEntity)
-        model.addAttribute("form", form)
-
         return if (userPrincipal == null) {
             "authentication/sign-up"
         } else {
@@ -54,9 +49,6 @@ class AuthenticationController(
             bindingResult: BindingResult,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal?.userEntity)
-        model.addAttribute("form", form)
-
         if (userPrincipal != null) {
             return "redirect:/dashboard"
         }
