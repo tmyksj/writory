@@ -13,8 +13,14 @@
       th:uk-height-viewport="|expand: true|">
     <th:block th:if="${itemFound}">
         <div th:class="|uk-margin-large-top|">
-            <h2 th:class="|uk-heading-divider|"
-                th:text="${item.title}"></h2>
+            <div th:class="|uk-flex uk-flex-bottom uk-heading-divider|">
+                <h2 th:class="|uk-flex-1 uk-margin-remove|"
+                    th:text="${item.title}"></h2>
+                <a th:class="|uk-flex-none uk-margin-left uk-text-muted|"
+                   th:href="@{/item/{id}?all(id=${form.id})}"
+                   th:if="${form.all} == null"
+                   th:text="|すべて表示|"></a>
+            </div>
         </div>
         <div th:class="|uk-margin-medium|"
              th:each="section : ${itemSectionList}">
