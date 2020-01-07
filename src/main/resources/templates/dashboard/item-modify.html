@@ -66,10 +66,10 @@
                                 <button th:class="|uk-button uk-button-default|"
                                         th:type="|button|"
                                         th:wr-star="|wr-star|">
-                                    <span th:uk-icon="|icon: star|"
-                                          th:if="${section.star}"></span>
-                                    <span th:uk-icon="|icon: minus|"
-                                          th:if="${!section.star}"></span>
+                                    <span th:if="${section.star}"
+                                          th:uk-icon="|icon: star|"></span>
+                                    <span th:if="${!section.star}"
+                                          th:uk-icon="|icon: minus|"></span>
                                 </button>
                             </div>
                             <div th:class="|uk-auto|">

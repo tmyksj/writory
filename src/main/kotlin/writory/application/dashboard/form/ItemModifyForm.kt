@@ -4,16 +4,18 @@ import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-class ItemModifyForm {
+data class ItemModifyForm(
 
-    @NotBlank
-    var id: String? = null
+        @NotBlank
+        var id: String? = null,
 
-    @NotBlank
-    var title: String? = null
+        @NotBlank
+        var title: String? = null,
 
-    @Valid
-    var sectionList: List<Section>? = null
+        @Valid
+        var sectionList: List<Section>? = null
+
+) {
 
     data class Section(
 

@@ -25,7 +25,6 @@ class DashboardController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
         return "redirect:/dashboard/item"
     }
 
@@ -34,8 +33,6 @@ class DashboardController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
-
         val itemEntityList: List<ItemEntity> = itemDomain.scopeByUserIdFindAllByUserId(userPrincipal.userEntity.id!!)
         model.addAttribute("itemList", itemEntityList)
 
@@ -47,7 +44,6 @@ class DashboardController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
         val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userPrincipal.userEntity.id!!)
         return "redirect:/dashboard/item/modify/${itemEntity.id}"
     }
@@ -58,7 +54,6 @@ class DashboardController(
             form: ItemDeleteForm,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
         itemDomain.scopeByUserIdDeleteById(userPrincipal.userEntity.id!!, form.id!!)
         return "redirect:/dashboard"
     }
@@ -69,9 +64,6 @@ class DashboardController(
             form: ItemModifyForm,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
-        model.addAttribute("form", form)
-
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 itemDomain.scopeByUserIdFindById(userPrincipal.userEntity.id!!, form.id!!)
 
@@ -100,9 +92,6 @@ class DashboardController(
             bindingResult: BindingResult,
             model: Model
     ): String {
-        model.addAttribute("user", userPrincipal.userEntity)
-        model.addAttribute("form", form)
-
         if (bindingResult.hasErrors()) {
             return "dashboard/item-modify"
         }
