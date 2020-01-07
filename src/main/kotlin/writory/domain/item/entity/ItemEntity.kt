@@ -5,6 +5,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
 @Entity
@@ -12,7 +13,7 @@ import javax.validation.constraints.Size
 data class ItemEntity(
 
         @field:NotBlank
-        @field:Size(max = 36, min = 36)
+        @field:Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
         var userId: String? = null,
 
         @field:NotNull
@@ -23,7 +24,7 @@ data class ItemEntity(
 
     @Id
     @NotBlank
-    @Size(max = 36, min = 36)
+    @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
     var id: String? = null
         private set
 

@@ -3,17 +3,14 @@ package writory.domain.item.entity
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import javax.validation.constraints.*
 
 @Entity
 @Table(name = "item_section")
 data class ItemSectionEntity(
 
         @field:NotBlank
-        @field:Size(max = 36, min = 36)
+        @field:Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
         var itemId: String? = null,
 
         @field:Min(value = 0)
@@ -35,7 +32,7 @@ data class ItemSectionEntity(
 
     @Id
     @NotBlank
-    @Size(max = 36, min = 36)
+    @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
     var id: String? = null
         private set
 
