@@ -11,11 +11,14 @@
 <header th:replace="fragment :: header"></header>
 <main th:class="|uk-container|"
       th:uk-height-viewport="|expand: true|">
-    <ul th:class="|uk-margin uk-margin-large-top|"
-        th:uk-tab="|uk-tab|">
+    <ul th:class="|uk-margin uk-margin-large-top uk-tab|">
         <li th:class="|uk-active|">
             <a th:href="@{/dashboard/item}"
                th:text="|投稿|"></a>
+        </li>
+        <li>
+            <a th:href="@{/dashboard/configuration}"
+               th:text="|設定|"></a>
         </li>
     </ul>
     <form th:action="@{/dashboard/item/create}"

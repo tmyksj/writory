@@ -20,6 +20,14 @@ class DashboardController(
         private val itemDomain: ItemDomain
 ) {
 
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/configuration"])
+    fun configuration(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            model: Model
+    ): String {
+        return "dashboard/configuration"
+    }
+
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard"])
     fun index(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
