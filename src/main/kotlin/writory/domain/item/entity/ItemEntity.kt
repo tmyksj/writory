@@ -17,7 +17,7 @@ data class ItemEntity(
         var userId: String? = null,
 
         @field:NotNull
-        @field:Size(max = 65535, min = 0)
+        @field:Size(max = 255, min = 0)
         var title: String? = null
 
 ) {

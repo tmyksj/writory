@@ -18,11 +18,11 @@ data class ItemSectionEntity(
         var position: Int? = null,
 
         @field:NotNull
-        @field:Size(max = 65535, min = 0)
+        @field:Size(max = 255, min = 0)
         var header: String? = null,
 
         @field:NotNull
-        @field:Size(max = 65535, min = 0)
+        @field:Size(max = 21844, min = 0)
         var body: String? = null,
 
         @field:NotNull
