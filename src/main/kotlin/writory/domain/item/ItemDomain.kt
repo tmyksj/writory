@@ -9,6 +9,10 @@ interface ItemDomain {
 
     fun scopeByUserIdCreate(userId: String): ItemEntity
 
+    fun scopeByUserIdDeleteById(userId: String, itemId: String)
+
+    fun scopeByUserIdFindAllByUserId(userId: String): List<ItemEntity>
+
     fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
 
     fun scopeByUserIdModify(userId: String,

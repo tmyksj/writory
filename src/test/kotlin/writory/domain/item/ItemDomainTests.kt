@@ -98,6 +98,28 @@ class ItemDomainTests {
     }
 
     @Test
+    fun scopeByUserIdDeleteByIdDeletesItem() {
+        itemDomain.scopeByUserIdDeleteById(userEntity.id!!, itemEntity.id!!)
+        Assertions.assertThat(itemSectionRepository.findById(itemEntity.id!!).isEmpty).isTrue()
+    }
+
+    @Test
+    fun scopeByUserIdDeleteByIdThrowsItemNotFoundException() {
+        val otherUserEntity: UserEntity = userRepository.save(UserEntity(
+                email = "${UUID.randomUUID()}@example.com",
+                password = "password"
+        ))
+
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdDeleteById(userEntity.id!!, UUID.randomUUID().toString())
+        }.isInstanceOf(ItemNotFoundException::class.java)
+
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdDeleteById(otherUserEntity.id!!, itemEntity.id!!)
+        }.isInstanceOf(ItemNotFoundException::class.java)
+    }
+
+    @Test
     fun scopeByUserIdFindByIdReturnsItem() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 itemDomain.scopeByUserIdFindById(userEntity.id!!, itemEntity.id!!)

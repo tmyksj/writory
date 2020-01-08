@@ -50,8 +50,8 @@ class DashboardControllerTests {
     }
 
     @Test
-    fun indexRespondsOk() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard")
+    fun itemRespondsOk() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }

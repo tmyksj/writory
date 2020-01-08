@@ -32,6 +32,20 @@ class ItemDomainImpl(
         ))
     }
 
+    override fun scopeByUserIdDeleteById(userId: String, itemId: String) {
+        val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
+
+        if (userId != entity.userId) {
+            throw ItemNotFoundException()
+        }
+
+        itemRepository.delete(entity)
+    }
+
+    override fun scopeByUserIdFindAllByUserId(userId: String): List<ItemEntity> {
+        return itemRepository.findAllByUserIdOrderByModifiedDesc(userId)
+    }
+
     override fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
         val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
         val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)

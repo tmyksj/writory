@@ -13,7 +13,7 @@
       th:uk-height-viewport="|expand: true|">
     <div th:class="|uk-flex|">
         <div th:class="|uk-flex-1|">
-            <form th:action="@{/dashboard/item/{id}(id=${form.id})}"
+            <form th:action="@{/dashboard/item/modify/{id}(id=${form.id})}"
                   th:class="|uk-form-stacked|"
                   th:method="|post|"
                   th:object="${form}">

@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import writory.application.dashboard.form.ItemDeleteForm
 import writory.application.dashboard.form.ItemModifyForm
 import writory.domain.item.ItemDomain
 import writory.domain.item.entity.ItemEntity
@@ -24,19 +25,40 @@ class DashboardController(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
-        return "dashboard/index"
+        return "redirect:/dashboard/item"
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item"])
-    fun itemPost(
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item"])
+    fun item(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            model: Model
+    ): String {
+        val itemEntityList: List<ItemEntity> = itemDomain.scopeByUserIdFindAllByUserId(userPrincipal.userEntity.id!!)
+        model.addAttribute("itemList", itemEntityList)
+
+        return "dashboard/item"
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/create"])
+    fun itemCreatePost(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
         val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userPrincipal.userEntity.id!!)
-        return "redirect:/dashboard/item/${itemEntity.id}"
+        return "redirect:/dashboard/item/modify/${itemEntity.id}"
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item/{id}"])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/delete/{id}"])
+    fun itemDeletePost(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            form: ItemDeleteForm,
+            model: Model
+    ): String {
+        itemDomain.scopeByUserIdDeleteById(userPrincipal.userEntity.id!!, form.id!!)
+        return "redirect:/dashboard"
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item/modify/{id}"])
     fun itemModify(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             form: ItemModifyForm,
@@ -63,7 +85,7 @@ class DashboardController(
         return "dashboard/item-modify"
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/{id}"])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/modify/{id}"])
     fun itemModifyPost(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             @Validated form: ItemModifyForm,
