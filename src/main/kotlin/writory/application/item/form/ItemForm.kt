@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank
 
 data class ItemForm(
 
-        @NotBlank
+        @field:NotBlank
         var id: String? = null,
 
         var all: String? = null
