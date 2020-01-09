@@ -56,10 +56,10 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun getSignIn_responds_3xx_when_signed_in() {
+    fun getSignIn_responds_302_when_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-in")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+                .andExpect(MockMvcResultMatchers.status().isFound)
     }
 
     @Test
@@ -69,29 +69,29 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun getSignUp_responds_3xx_when_signed_in() {
+    fun getSignUp_responds_302_when_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+                .andExpect(MockMvcResultMatchers.status().isFound)
     }
 
     @Test
-    fun postSignUp_responds_3xx() {
+    fun postSignUp_responds_302() {
         mockMvc.perform(MockMvcRequestBuilders.post("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .param("email", "${UUID.randomUUID()}@example.com")
                 .param("password", "password"))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+                .andExpect(MockMvcResultMatchers.status().isFound)
     }
 
     @Test
-    fun postSignUp_responds_3xx_when_user_signed_in() {
+    fun postSignUp_responds_302_when_user_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.post("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
                 .param("email", "${UUID.randomUUID()}@example.com")
                 .param("password", "password"))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+                .andExpect(MockMvcResultMatchers.status().isFound)
     }
 
     @Test

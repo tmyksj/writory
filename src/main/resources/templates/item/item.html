@@ -11,7 +11,7 @@
 <header th:replace="fragment :: header"></header>
 <main th:class="|uk-container|"
       th:uk-height-viewport="|expand: true|">
-    <th:block th:if="${itemFound}">
+    <th:block th:if="${httpStatusCode200}">
         <div th:class="|uk-margin-large-top|">
             <div th:class="|uk-flex uk-flex-bottom uk-heading-divider|">
                 <h2 th:class="|uk-flex-1 uk-margin-remove|"
@@ -37,7 +37,7 @@
             <div th:text="${section.body}"></div>
         </div>
     </th:block>
-    <th:block th:if="${!itemFound}">
+    <th:block th:if="${httpStatusCode404}">
         <div th:class="|uk-flex uk-flex-center|">
             <div th:class="|uk-flex-none|">
                 <div th:class="|uk-margin-xlarge-top|">
