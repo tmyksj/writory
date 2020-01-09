@@ -71,13 +71,13 @@ class ItemControllerTests {
     }
 
     @Test
-    fun item_responds_200() {
+    fun getItem_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/item/${itemEntity.id}"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun item_responds_404_when_item_does_not_exists() {
+    fun getItem_responds_404_when_item_does_not_exists() {
         mockMvc.perform(MockMvcRequestBuilders.get("/item/${UUID.randomUUID()}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
     }

@@ -50,13 +50,13 @@ class HomeControllerTests {
     }
 
     @Test
-    fun index_responds_200() {
+    fun getIndex_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun index_responds_3xx_when_user_signed_in() {
+    fun getIndex_responds_3xx_when_user_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection)

@@ -62,60 +62,60 @@ class DashboardControllerTests {
     }
 
     @Test
-    fun index_responds_3xx() {
+    fun getIndex_responds_3xx() {
         mockMvc.perform(MockMvcRequestBuilders.get("/dashboard")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
     }
 
     @Test
-    fun item_responds_200() {
+    fun getItem_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun itemCreatePost_responds_3xx() {
-        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/create")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
-    }
-
-    @Test
-    fun itemDeletePost_responds_3xx() {
-        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/delete/${itemEntity.id}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
-    }
-
-    @Test
-    fun itemDeletePost_responds_3xx_when_item_does_not_exists() {
-        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/delete/${UUID.randomUUID()}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
-    }
-
-    @Test
-    fun itemModify_responds_200() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/modify/${itemEntity.id}")
+    fun getItemModify_responds_200() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/${itemEntity.id}/modify")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun itemModify_responds_400_when_item_does_not_exists() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/modify/${UUID.randomUUID()}")
+    fun getItemModify_responds_400_when_item_does_not_exists() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/${UUID.randomUUID()}/modify")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest)
     }
 
     @Test
-    fun itemModifyPost_responds_3xx() {
-        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/modify/${itemEntity.id}")
+    fun postItem_responds_3xx() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+    }
+
+    @Test
+    fun postItemDelete_responds_3xx() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/${itemEntity.id}/delete")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+    }
+
+    @Test
+    fun postItemDelete_responds_3xx_when_item_does_not_exists() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/${UUID.randomUUID()}/delete")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+    }
+
+    @Test
+    fun postItemModify_responds_3xx() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/${itemEntity.id}/modify")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
                 .param("title", "[modified]title")
@@ -126,8 +126,8 @@ class DashboardControllerTests {
     }
 
     @Test
-    fun itemModifyPost_responds_400_when_item_does_not_exists() {
-        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/modify/${UUID.randomUUID()}")
+    fun postItemModify_responds_400_when_item_does_not_exists() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/${UUID.randomUUID()}/modify")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
                 .param("title", "[modified]title")
@@ -138,8 +138,8 @@ class DashboardControllerTests {
     }
 
     @Test
-    fun itemModifyPost_responds_400_when_params_are_invalid() {
-        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/modify/${itemEntity.id}")
+    fun postItemModify_responds_400_when_params_are_invalid() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item/${itemEntity.id}/modify")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
                 .param("sectionList[0].header", "header")

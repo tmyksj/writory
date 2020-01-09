@@ -18,7 +18,7 @@
                th:text="|投稿|"></a>
         </li>
     </ul>
-    <form th:action="@{/dashboard/item/create}"
+    <form th:action="@{/dashboard/item}"
           th:class="|uk-margin uk-text-right|"
           th:method="|post|">
         <button th:class="|uk-button uk-button-primary|"
@@ -44,9 +44,9 @@
                            th:href="@{/item/{id}(id=${item.id})}"
                            th:text="|確認|"></a>
                         <a th:class="|uk-button uk-button-default uk-button-small|"
-                           th:href="@{/dashboard/item/modify/{id}(id=${item.id})}"
+                           th:href="@{/dashboard/item/{id}/modify(id=${item.id})}"
                            th:text="|編集|"></a>
-                        <form th:action="@{/dashboard/item/delete/{id}(id=${item.id})}"
+                        <form th:action="@{/dashboard/item/{id}/delete(id=${item.id})}"
                               th:method="|delete|">
                             <button th:class="|uk-button uk-button-danger uk-button-small|"
                                     th:text="|削除|"

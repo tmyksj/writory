@@ -18,7 +18,7 @@ class ItemController(
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/item/{id}"])
-    fun item(
+    fun getItem(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             form: ItemForm,
             model: Model

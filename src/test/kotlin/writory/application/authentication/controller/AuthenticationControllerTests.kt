@@ -50,33 +50,33 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun signIn_responds_200() {
+    fun getSignIn_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-in"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun signIn_responds_3xx_when_signed_in() {
+    fun getSignIn_responds_3xx_when_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-in")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
     }
 
     @Test
-    fun signUp_responds_200() {
+    fun getSignUp_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-up"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun signUp_responds_3xx_when_signed_in() {
+    fun getSignUp_responds_3xx_when_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
     }
 
     @Test
-    fun signUpPost_responds_3xx() {
+    fun postSignUp_responds_3xx() {
         mockMvc.perform(MockMvcRequestBuilders.post("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .param("email", "${UUID.randomUUID()}@example.com")
@@ -85,7 +85,7 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun signUpPost_responds_3xx_when_user_signed_in() {
+    fun postSignUp_responds_3xx_when_user_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.post("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
@@ -95,7 +95,7 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun signUpPost_responds_400_when_params_are_invalid() {
+    fun postSignUp_responds_400_when_params_are_invalid() {
         mockMvc.perform(MockMvcRequestBuilders.post("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .param("email", "[invalid]email")

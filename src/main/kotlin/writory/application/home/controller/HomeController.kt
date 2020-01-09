@@ -11,7 +11,7 @@ import writory.domain.user.principal.UserPrincipal
 class HomeController {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/"])
-    fun index(
+    fun getIndex(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             model: Model
     ): String {

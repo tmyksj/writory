@@ -18,7 +18,7 @@ class AuthenticationController(
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/sign-in"])
-    fun signIn(
+    fun getSignIn(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             model: Model
     ): String {
@@ -30,7 +30,7 @@ class AuthenticationController(
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/sign-up"])
-    fun signUp(
+    fun getSignUp(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             form: SignUpForm,
             model: Model
@@ -43,7 +43,7 @@ class AuthenticationController(
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/sign-up"])
-    fun signUpPost(
+    fun postSignUp(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             @Validated form: SignUpForm,
             bindingResult: BindingResult,

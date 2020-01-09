@@ -21,7 +21,7 @@ class DashboardController(
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard"])
-    fun index(
+    fun getIndex(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
@@ -29,7 +29,7 @@ class DashboardController(
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item"])
-    fun item(
+    fun getItem(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             model: Model
     ): String {
@@ -39,27 +39,8 @@ class DashboardController(
         return "dashboard/item"
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/create"])
-    fun itemCreatePost(
-            @AuthenticationPrincipal userPrincipal: UserPrincipal,
-            model: Model
-    ): String {
-        val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userPrincipal.userEntity.id!!)
-        return "redirect:/dashboard/item/modify/${itemEntity.id}"
-    }
-
-    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/delete/{id}"])
-    fun itemDeletePost(
-            @AuthenticationPrincipal userPrincipal: UserPrincipal,
-            form: ItemDeleteForm,
-            model: Model
-    ): String {
-        itemDomain.scopeByUserIdDeleteById(userPrincipal.userEntity.id!!, form.id!!)
-        return "redirect:/dashboard"
-    }
-
-    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item/modify/{id}"])
-    fun itemModify(
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item/{id}/modify"])
+    fun getItemModify(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             form: ItemModifyForm,
             model: Model
@@ -85,8 +66,27 @@ class DashboardController(
         return "dashboard/item-modify"
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/modify/{id}"])
-    fun itemModifyPost(
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item"])
+    fun postItem(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            model: Model
+    ): String {
+        val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userPrincipal.userEntity.id!!)
+        return "redirect:/dashboard/item/${itemEntity.id}/modify"
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/{id}/delete"])
+    fun postItemDelete(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            form: ItemDeleteForm,
+            model: Model
+    ): String {
+        itemDomain.scopeByUserIdDeleteById(userPrincipal.userEntity.id!!, form.id!!)
+        return "redirect:/dashboard"
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/{id}/modify"])
+    fun postItemModify(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             @Validated form: ItemModifyForm,
             bindingResult: BindingResult,
