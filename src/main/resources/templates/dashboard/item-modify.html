@@ -43,6 +43,7 @@
                         <div th:class="|uk-margin|"
                              th:each="section, iterStat : *{sectionList}">
                             <input th:id="|sectionList[${iterStat.index}].id|"
+                                   th:if="${section.id} != null"
                                    th:name="|sectionList[${iterStat.index}].id|"
                                    th:type="|hidden|"
                                    th:value="${section.id}">
