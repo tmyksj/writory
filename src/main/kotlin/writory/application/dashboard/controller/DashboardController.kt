@@ -53,6 +53,7 @@ class DashboardController(
         return try {
             val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                     itemDomain.scopeByUserIdFindById(userPrincipal.userEntity.id!!, form.id!!)
+            model.addAttribute("found", true)
 
             if (form.title == null) {
                 form.title = item.first.title
@@ -71,7 +72,7 @@ class DashboardController(
 
             "200:dashboard/item-modify"
         } catch (e: ItemNotFoundException) {
-            // TODO
+            model.addAttribute("notFound", true)
             "400:dashboard/item-modify"
         }
     }
@@ -109,6 +110,8 @@ class DashboardController(
             httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
+        model.addAttribute("found", true)
+
         if (bindingResult.hasErrors()) {
             return "400:dashboard/item-modify"
         }

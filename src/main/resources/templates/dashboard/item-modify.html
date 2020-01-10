@@ -11,104 +11,116 @@
 <header th:replace="fragment :: header"></header>
 <main th:class="|uk-container|"
       th:uk-height-viewport="|expand: true|">
-    <div th:class="|uk-flex|">
-        <div th:class="|uk-flex-1|">
-            <form th:action="@{/dashboard/item/{id}/modify(id=${form.id})}"
-                  th:class="|uk-form-stacked|"
-                  th:method="|post|"
-                  th:object="${form}">
-                <div th:class="|uk-margin uk-margin-large-top|">
-                    <div th:class="|uk-text-right|">
-                        <button th:class="|uk-button uk-button-primary|"
-                                th:text="|更新|"
-                                th:type="|submit|"></button>
+    <th:block th:if="${found}">
+        <div th:class="|uk-flex|">
+            <div th:class="|uk-flex-1|">
+                <form th:action="@{/dashboard/item/{id}/modify(id=${form.id})}"
+                      th:class="|uk-form-stacked|"
+                      th:method="|post|"
+                      th:object="${form}">
+                    <div th:class="|uk-margin uk-margin-large-top|">
+                        <div th:class="|uk-text-right|">
+                            <button th:class="|uk-button uk-button-primary|"
+                                    th:text="|更新|"
+                                    th:type="|submit|"></button>
+                        </div>
                     </div>
-                </div>
-                <hr>
-                <div th:class="|uk-margin|">
-                    <label th:class="|uk-form-label|"
-                           th:for="|title|"
-                           th:text="|タイトル|"></label>
-                    <div th:class="|uk-form-controls|">
-                        <input th:autofocus="|autofocus|"
-                               th:class="|uk-input|"
-                               th:field="*{title}"
-                               th:type="|text|">
+                    <hr>
+                    <div th:class="|uk-margin|">
+                        <label th:class="|uk-form-label|"
+                               th:for="|title|"
+                               th:text="|タイトル|"></label>
+                        <div th:class="|uk-form-controls|">
+                            <input th:autofocus="|autofocus|"
+                                   th:class="|uk-input|"
+                                   th:field="*{title}"
+                                   th:type="|text|">
+                        </div>
                     </div>
-                </div>
-                <hr>
-                <div th:uk-sortable="|handle: .uk-margin|"
-                     th:wr-section-list="|section-list|">
-                    <div th:class="|uk-margin|"
-                         th:each="section, iterStat : *{sectionList}">
-                        <input th:id="|sectionList[${iterStat.index}].id|"
-                               th:name="|sectionList[${iterStat.index}].id|"
-                               th:type="|hidden|"
-                               th:value="${section.id}">
-                        <div th:class="|uk-flex uk-flex-bottom uk-margin-small|">
-                            <div th:class="|uk-flex-1 uk-margin-right|">
-                                <label th:class="|uk-form-label|"
-                                       th:for="|sectionList[${iterStat.index}].header|"
-                                       th:text="|見出し|"></label>
-                                <div th:class="|uk-form-controls|">
-                                    <input th:class="|uk-input|"
-                                           th:id="|sectionList[${iterStat.index}].header|"
-                                           th:name="|sectionList[${iterStat.index}].header|"
-                                           th:type="|text|"
-                                           th:value="${section.header}">
+                    <hr>
+                    <div th:uk-sortable="|handle: .uk-margin|"
+                         th:wr-section-list="|section-list|">
+                        <div th:class="|uk-margin|"
+                             th:each="section, iterStat : *{sectionList}">
+                            <input th:id="|sectionList[${iterStat.index}].id|"
+                                   th:name="|sectionList[${iterStat.index}].id|"
+                                   th:type="|hidden|"
+                                   th:value="${section.id}">
+                            <div th:class="|uk-flex uk-flex-bottom uk-margin-small|">
+                                <div th:class="|uk-flex-1 uk-margin-right|">
+                                    <label th:class="|uk-form-label|"
+                                           th:for="|sectionList[${iterStat.index}].header|"
+                                           th:text="|見出し|"></label>
+                                    <div th:class="|uk-form-controls|">
+                                        <input th:class="|uk-input|"
+                                               th:id="|sectionList[${iterStat.index}].header|"
+                                               th:name="|sectionList[${iterStat.index}].header|"
+                                               th:type="|text|"
+                                               th:value="${section.header}">
+                                    </div>
+                                </div>
+                                <div th:class="|uk-auto uk-margin-right|">
+                                    <input th:id="|sectionList[${iterStat.index}].star|"
+                                           th:name="|sectionList[${iterStat.index}].star|"
+                                           th:type="|hidden|"
+                                           th:value="${section.star}">
+                                    <button th:class="|uk-button uk-button-default|"
+                                            th:type="|button|"
+                                            th:wr-star="|wr-star|">
+                                        <span th:if="${section.star}"
+                                              th:uk-icon="|icon: star|"></span>
+                                        <span th:if="${!section.star}"
+                                              th:uk-icon="|icon: minus|"></span>
+                                    </button>
+                                </div>
+                                <div th:class="|uk-auto|">
+                                    <button th:class="|uk-button uk-button-danger|"
+                                            th:type="|button|"
+                                            th:wr-delete="|wr-delete|">
+                                        <span th:uk-icon="|icon: close|"></span>
+                                    </button>
                                 </div>
                             </div>
-                            <div th:class="|uk-auto uk-margin-right|">
-                                <input th:id="|sectionList[${iterStat.index}].star|"
-                                       th:name="|sectionList[${iterStat.index}].star|"
-                                       th:type="|hidden|"
-                                       th:value="${section.star}">
-                                <button th:class="|uk-button uk-button-default|"
-                                        th:type="|button|"
-                                        th:wr-star="|wr-star|">
-                                    <span th:if="${section.star}"
-                                          th:uk-icon="|icon: star|"></span>
-                                    <span th:if="${!section.star}"
-                                          th:uk-icon="|icon: minus|"></span>
-                                </button>
+                            <div th:class="|uk-margin-small|">
+                                <label th:class="|uk-form-label|"
+                                       th:for="|sectionList[${iterStat.index}].body|"
+                                       th:text="|本文|"></label>
+                                <div th:class="|uk-form-controls|">
+                                    <textarea th:class="|uk-resize-vertical uk-textarea|"
+                                              th:id="|sectionList[${iterStat.index}].body|"
+                                              th:name="|sectionList[${iterStat.index}].body|"
+                                              th:rows="|10|"
+                                              th:text="${section.body}"></textarea>
+                                </div>
                             </div>
-                            <div th:class="|uk-auto|">
-                                <button th:class="|uk-button uk-button-danger|"
-                                        th:type="|button|"
-                                        th:wr-delete="|wr-delete|">
-                                    <span th:uk-icon="|icon: close|"></span>
-                                </button>
-                            </div>
+                            <hr>
                         </div>
-                        <div th:class="|uk-margin-small|">
-                            <label th:class="|uk-form-label|"
-                                   th:for="|sectionList[${iterStat.index}].body|"
-                                   th:text="|本文|"></label>
-                            <div th:class="|uk-form-controls|">
-                                <textarea th:class="|uk-resize-vertical uk-textarea|"
-                                          th:id="|sectionList[${iterStat.index}].body|"
-                                          th:name="|sectionList[${iterStat.index}].body|"
-                                          th:rows="|10|"
-                                          th:text="${section.body}"></textarea>
-                            </div>
+                    </div>
+                    <div th:class="|uk-margin|">
+                        <div th:class="|uk-text-right|">
+                            <button th:class="|uk-button uk-button-primary|"
+                                    th:text="|新しいセクション|"
+                                    th:type="|button|"
+                                    th:wr-add="|wr-add|"></button>
                         </div>
-                        <hr>
                     </div>
-                </div>
-                <div th:class="|uk-margin|">
-                    <div th:class="|uk-text-right|">
-                        <button th:class="|uk-button uk-button-primary|"
-                                th:text="|新しいセクション|"
-                                th:type="|button|"
-                                th:wr-add="|wr-add|"></button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    </th:block>
+    <th:block th:if="${notFound}">
+        <div th:class="|uk-flex uk-flex-center|">
+            <div th:class="|uk-flex-none|">
+                <div th:class="|uk-margin-xlarge-top|">
+                    <p th:text="|投稿が見つかりませんでした。|"></p>
+                </div>
+            </div>
+        </div>
+    </th:block>
 </main>
 <footer th:replace="fragment :: footer"></footer>
-<script th:inline="javascript">
+<script th:if="${found}"
+        th:inline="javascript">
     (() => {
         const fun = {
             add: (source) => {
@@ -119,47 +131,47 @@
 
                 const section = document.createElement("div");
                 section.innerHTML = `<div class="uk-margin">
-<div class="uk-flex uk-flex-bottom uk-margin-small">
-    <div class="uk-flex-1 uk-margin-right">
-        <label class="uk-form-label"
-               for="sectionList[65535].header">見出し</label>
-        <div class="uk-form-controls">
-            <input class="uk-input"
-                   id="sectionList[65535].header"
-                   name="sectionList[65535].header"
-                   type="text">
+    <div class="uk-flex uk-flex-bottom uk-margin-small">
+        <div class="uk-flex-1 uk-margin-right">
+            <label class="uk-form-label"
+                   for="sectionList[65535].header">見出し</label>
+            <div class="uk-form-controls">
+                <input class="uk-input"
+                       id="sectionList[65535].header"
+                       name="sectionList[65535].header"
+                       type="text">
+            </div>
+        </div>
+        <div class="uk-auto uk-margin-right">
+            <input id="sectionList[65535].star"
+                   name="sectionList[65535].star"
+                   type="hidden"
+                   value="false">
+            <button class="uk-button uk-button-default"
+                    type="button"
+                    wr-star="wr-star">
+                <span uk-icon="icon: minus"></span>
+            </button>
+        </div>
+        <div class="uk-auto">
+            <button class="uk-button uk-button-danger"
+                    type="button"
+                    wr-delete="wr-delete">
+                <span uk-icon="icon: close"></span>
+            </button>
         </div>
     </div>
-    <div class="uk-auto uk-margin-right">
-        <input id="sectionList[65535].star"
-               name="sectionList[65535].star"
-               type="hidden"
-               value="false">
-        <button class="uk-button uk-button-default"
-                type="button"
-                wr-star="wr-star">
-            <span uk-icon="icon: minus"></span>
-        </button>
+    <div class="uk-margin-small">
+        <label class="uk-form-label"
+               for="sectionList[65535].body">本文</label>
+        <div class="uk-form-controls">
+            <textarea class="uk-resize-vertical uk-textarea"
+                      id="sectionList[65535].body"
+                      name="sectionList[65535].body"
+                      rows="10"></textarea>
+        </div>
     </div>
-    <div class="uk-auto">
-        <button class="uk-button uk-button-danger"
-                type="button"
-                wr-delete="wr-delete">
-            <span uk-icon="icon: close"></span>
-        </button>
-    </div>
-</div>
-<div class="uk-margin-small">
-    <label class="uk-form-label"
-           for="sectionList[65535].body">本文</label>
-    <div class="uk-form-controls">
-        <textarea class="uk-resize-vertical uk-textarea"
-                  id="sectionList[65535].body"
-                  name="sectionList[65535].body"
-                  rows="10"></textarea>
-    </div>
-</div>
-<hr>
+    <hr>
 </div>`;
                 document.querySelector("[wr-section-list]").appendChild(section);
                 document.querySelector("[id=\"sectionList[65535].header\"]").focus();
