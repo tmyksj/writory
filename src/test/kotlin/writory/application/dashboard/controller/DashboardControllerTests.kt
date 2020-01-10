@@ -62,6 +62,13 @@ class DashboardControllerTests {
     }
 
     @Test
+    fun getConfiguration_responds_200() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/configuration")
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
     fun getIndex_responds_302() {
         mockMvc.perform(MockMvcRequestBuilders.get("/dashboard")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))

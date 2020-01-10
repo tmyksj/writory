@@ -23,11 +23,12 @@ class DashboardController(
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/configuration"])
-    fun configuration(
+    fun getConfiguration(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
-        return "dashboard/configuration"
+        return "200:dashboard/configuration"
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard"])
