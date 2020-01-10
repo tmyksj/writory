@@ -56,7 +56,7 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun getSignIn_responds_302_when_signed_in() {
+    fun getSignIn_responds_302_when_user_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-in")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isFound)
@@ -69,7 +69,7 @@ class AuthenticationControllerTests {
     }
 
     @Test
-    fun getSignUp_responds_302_when_signed_in() {
+    fun getSignUp_responds_302_when_user_signed_in() {
         mockMvc.perform(MockMvcRequestBuilders.get("/sign-up")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isFound)
