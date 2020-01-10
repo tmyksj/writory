@@ -11,6 +11,7 @@ import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemNotFoundException
 import writory.domain.user.principal.UserPrincipal
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 class ItemController(
@@ -18,26 +19,20 @@ class ItemController(
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/item/{id}"])
-    fun item(
+    fun getItem(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             form: ItemForm,
+            httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
-        try {
+        return try {
             val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(form.id!!)
-            model.addAttribute("itemFound", true)
             model.addAttribute("item", item.first)
-
-            if (form.all == null) {
-                model.addAttribute("itemSectionList", item.second.filter { it.star == true })
-            } else {
-                model.addAttribute("itemSectionList", item.second)
-            }
+            model.addAttribute("itemSectionList", item.second.filter { form.all != null || it.star == true })
+            "200:item/item"
         } catch (e: ItemNotFoundException) {
-            model.addAttribute("itemFound", false)
+            "404:item/item"
         }
-
-        return "item/item"
     }
 
 }

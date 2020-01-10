@@ -24,7 +24,7 @@ class UserDomainTests {
     private lateinit var userEntity: UserEntity
 
     @BeforeEach
-    fun savesUserEntity() {
+    fun saves_entities() {
         userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
@@ -32,27 +32,27 @@ class UserDomainTests {
     }
 
     @Test
-    fun loadUserByUsernameReturnsUserPrincipal() {
+    fun loadUserByUsername_returns_user() {
         val userPrincipal: UserPrincipal? = userDomain.loadUserByUsername(userEntity.email) as? UserPrincipal
         Assertions.assertThat(userPrincipal?.userEntity?.email).isEqualTo(userEntity.email)
     }
 
     @Test
-    fun loadUserByUsernameThrowsUsernameNotFoundException() {
+    fun loadUserByUsername_throws_UsernameNotFoundException_when_user_does_not_exists() {
         Assertions.assertThatThrownBy {
             userDomain.loadUserByUsername("${UUID.randomUUID()}@example.com")
         }.isInstanceOf(UsernameNotFoundException::class.java)
     }
 
     @Test
-    fun signUpCreatesUser() {
+    fun signUp_creates_user() {
         val email = "${UUID.randomUUID()}@example.com"
         userDomain.signUp(email, "password")
         Assertions.assertThat(userRepository.findByEmail(email)).isNotNull
     }
 
     @Test
-    fun signUpFailsIfUserFound() {
+    fun signUp_throws_UserFoundException_when_email_already_used() {
         Assertions.assertThatThrownBy {
             userDomain.signUp(userEntity.email!!, "password")
         }.isInstanceOf(UserFoundException::class.java)
