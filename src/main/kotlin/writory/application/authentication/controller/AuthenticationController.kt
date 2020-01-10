@@ -11,6 +11,7 @@ import writory.application.authentication.form.SignUpForm
 import writory.domain.user.UserDomain
 import writory.domain.user.exception.UserFoundException
 import writory.domain.user.principal.UserPrincipal
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 class AuthenticationController(
@@ -18,50 +19,53 @@ class AuthenticationController(
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/sign-in"])
-    fun signIn(
+    fun getSignIn(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
+            httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
         return if (userPrincipal == null) {
-            "authentication/sign-in"
+            "200:authentication/sign-in"
         } else {
-            "redirect:/dashboard"
+            "302:/dashboard"
         }
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/sign-up"])
-    fun signUp(
+    fun getSignUp(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             form: SignUpForm,
+            httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
         return if (userPrincipal == null) {
-            "authentication/sign-up"
+            "200:authentication/sign-up"
         } else {
-            "redirect:/dashboard"
+            "302:/dashboard"
         }
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/sign-up"])
-    fun signUpPost(
+    fun postSignUp(
             @AuthenticationPrincipal userPrincipal: UserPrincipal?,
             @Validated form: SignUpForm,
             bindingResult: BindingResult,
+            httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
         if (userPrincipal != null) {
-            return "redirect:/dashboard"
+            return "302:/dashboard"
         }
 
         if (bindingResult.hasErrors()) {
-            return "authentication/sign-up"
+            return "400:authentication/sign-up"
         }
 
         return try {
             userDomain.signUp(form.email!!, form.password!!)
-            "redirect:/sign-in"
+            "302:/sign-in"
         } catch (e: UserFoundException) {
-            "authentication/sign-up"
+            "400:authentication/sign-up"
         }
     }
 
