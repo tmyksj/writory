@@ -28,6 +28,8 @@ class ItemControllerTests {
     @Autowired
     private lateinit var springSecurityFilterChain: Filter
 
+    private lateinit var mockMvc: MockMvc
+
     @Autowired
     private lateinit var itemRepository: ItemRepository
 
@@ -38,8 +40,6 @@ class ItemControllerTests {
     private lateinit var userRepository: UserRepository
 
     private lateinit var itemEntity: ItemEntity
-
-    private lateinit var mockMvc: MockMvc
 
     @BeforeEach
     fun buildsEntity() {
@@ -63,7 +63,7 @@ class ItemControllerTests {
     }
 
     @BeforeEach
-    fun buildsMockMvc() {
+    fun builds_MockMvc() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain)
@@ -71,9 +71,15 @@ class ItemControllerTests {
     }
 
     @Test
-    fun indexRespondsOk() {
+    fun getItem_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/item/${itemEntity.id}"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    fun getItem_responds_404_when_item_does_not_exists() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/item/${UUID.randomUUID()}"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 
 }

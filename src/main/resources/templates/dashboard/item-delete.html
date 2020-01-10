@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:charset="|utf-8|">
+    <title th:text="|writory|"></title>
+    <th:block th:replace="fragment :: meta"></th:block>
+    <th:block th:replace="fragment :: css"></th:block>
+    <th:block th:replace="fragment :: js"></th:block>
+</head>
+<body>
+<header th:replace="fragment :: header"></header>
+<main th:class="|uk-container|"
+      th:uk-height-viewport="|expand: true|">
+    <div th:class="|uk-flex uk-flex-center|">
+        <div th:class="|uk-flex-none|">
+            <div th:class="|uk-margin-xlarge-top|">
+                <p th:text="|投稿が見つかりませんでした。|"></p>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragment :: footer"></footer>
+</body>
+</html>
