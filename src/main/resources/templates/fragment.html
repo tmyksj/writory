@@ -54,9 +54,16 @@
 </main>
 <footer th:fragment="footer">
     <div th:class="|uk-container uk-container-expand|">
-        <div th:class="|uk-padding-small uk-text-right|">
-            <span th:class="|uk-text-muted uk-text-small|"
-                  th:text="|(c) writory|"></span>
+        <div th:class="|uk-padding-remove-left uk-padding-remove-right uk-padding-small uk-text-right|">
+            <a th:class="|uk-display-inline-block uk-text-muted uk-text-small|"
+               th:href="@{/about}"
+               th:text="|about|"></a>
+            <a th:class="|uk-display-inline-block uk-margin-small-left uk-text-muted uk-text-small|"
+               th:href="@{/terms-of-service}"
+               th:text="|利用規約|"></a>
+            <a th:class="|uk-display-inline-block uk-margin-small-left uk-text-muted uk-text-small|"
+               th:href="@{/privacy-policy}"
+               th:text="|プライバシーポリシー|"></a>
         </div>
     </div>
 </footer>
