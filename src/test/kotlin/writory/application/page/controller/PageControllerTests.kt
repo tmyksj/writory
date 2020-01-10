@@ -24,7 +24,7 @@ class PageControllerTests {
     private lateinit var mockMvc: MockMvc
 
     @BeforeEach
-    fun buildsMockMvc() {
+    fun builds_MockMvc() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilters<DefaultMockMvcBuilder>(springSecurityFilterChain)
@@ -32,19 +32,19 @@ class PageControllerTests {
     }
 
     @Test
-    fun aboutRespondsOk() {
+    fun getAbout_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/about"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun privacyPolicyRespondsOk() {
+    fun getPrivacyPolicy_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/privacy-policy"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun termsOfServiceRespondsOk() {
+    fun getTermsOfService_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/terms-of-service"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
     }
