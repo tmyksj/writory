@@ -90,10 +90,15 @@ class DashboardController(
     @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/item/{id}/delete"])
     fun postItemDelete(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
-            form: ItemDeleteForm,
+            @Validated form: ItemDeleteForm,
+            bindingResult: BindingResult,
             httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
+        if (bindingResult.hasErrors()) {
+            return "400:dashboard/item-delete"
+        }
+
         return try {
             itemDomain.scopeByUserIdDeleteById(userPrincipal.userEntity.id!!, form.id!!)
             "302:/dashboard"
