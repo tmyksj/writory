@@ -97,6 +97,24 @@ class DashboardControllerTests {
     }
 
     @Test
+    fun postConfigurationEmail_responds_302() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("email", "${UUID.randomUUID()}@example.com"))
+                .andExpect(MockMvcResultMatchers.status().isFound)
+    }
+
+    @Test
+    fun postConfigurationEmail_responds_400_when_params_are_invalid() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("email", "[invalid]email"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @Test
     fun postItem_responds_302() {
         mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/item")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
