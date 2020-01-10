@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -40,6 +41,9 @@ class DashboardControllerTests {
 
     private lateinit var userEntity: UserEntity
 
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+
     @BeforeEach
     fun builds_MockMvc() {
         mockMvc = MockMvcBuilders
@@ -52,7 +56,7 @@ class DashboardControllerTests {
     fun saves_entities() {
         userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
-                password = "password"
+                password = passwordEncoder.encode("password")
         ))
 
         itemEntity = itemRepository.save(ItemEntity(
@@ -111,6 +115,26 @@ class DashboardControllerTests {
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
                 .param("email", "[invalid]email"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @Test
+    fun postConfigurationPassword_responds_302() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/password")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("currentPassword", "password")
+                .param("newPassword", "newPassword"))
+                .andExpect(MockMvcResultMatchers.status().isFound)
+    }
+
+    @Test
+    fun postConfigurationPassword_responds_400_when_params_are_invalid() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/password")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("currentPassword", "wrongPassword")
+                .param("newPassword", "newPassword"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest)
     }
 
