@@ -44,9 +44,6 @@ class DashboardControllerTests {
 
     private lateinit var userEntity: UserEntity
 
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
-
     @BeforeEach
     fun builds_MockMvc() {
         mockMvc = MockMvcBuilders

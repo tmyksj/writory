@@ -27,9 +27,6 @@ class UserDomainTests {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
-
     private lateinit var userEntity: UserEntity
 
     private lateinit var otherUserEntity: UserEntity
