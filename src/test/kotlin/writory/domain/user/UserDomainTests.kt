@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.password.PasswordEncoder
 import writory.domain.user.entity.UserEntity
 import writory.domain.user.exception.UserFoundException
 import writory.domain.user.principal.UserPrincipal
@@ -14,6 +15,9 @@ import java.util.*
 
 @SpringBootTest
 class UserDomainTests {
+
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     private lateinit var userDomain: UserDomain
@@ -27,7 +31,7 @@ class UserDomainTests {
     fun saves_entities() {
         userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
-                password = "password"
+                password = passwordEncoder.encode("password")
         ))
     }
 
