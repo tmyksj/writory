@@ -14,7 +14,7 @@ create table user_profile
 (
     user_id          varchar(36) not null,
     username         varchar(255),
-    description      text,
+    description      varchar(255),
     link             varchar(255),
     external_github  varchar(255),
     external_twitter varchar(255),
