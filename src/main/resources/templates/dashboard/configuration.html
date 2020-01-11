@@ -21,6 +21,92 @@
                th:text="|設定|"></a>
         </li>
     </ul>
+    <div th:class="|uk-grid-match uk-grid-small uk-margin|"
+         th:uk-grid="|uk-grid|">
+        <div th:class="|uk-width-1-1 uk-width-1-2@m|">
+            <div th:class="|uk-card uk-card-body uk-card-default uk-card-small|">
+                <h2 th:class="|uk-card-title uk-text-truncate|"
+                    th:text="|メールアドレスの変更|"></h2>
+                <form th:action="@{/dashboard/configuration/email}"
+                      th:class="|uk-form-stacked|"
+                      th:method="|post|">
+                    <div th:class="|uk-margin|">
+                        <label th:class="|uk-form-label|"
+                               th:for="|email|"
+                               th:text="|メールアドレス|"></label>
+                        <div th:class="|uk-form-controls|">
+                            <div th:class="|uk-inline uk-width-1-1|">
+                                <span th:class="|uk-form-icon|"
+                                      th:uk-icon="|icon: mail|"></span>
+                                <input th:autocomplete="|email|"
+                                       th:class="|uk-input|"
+                                       th:id="|email|"
+                                       th:name="|email|"
+                                       th:type="|email|"
+                                       th:value="${user.email}">
+                            </div>
+                        </div>
+                    </div>
+                    <div th:class="|uk-margin-top|">
+                        <div th:class="|uk-text-right|">
+                            <button th:class="|uk-button uk-button-primary|"
+                                    th:text="|変更|"
+                                    th:type="|submit|"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div th:class="|uk-width-1-1 uk-width-1-2@m|">
+            <div th:class="|uk-card uk-card-body uk-card-default uk-card-small|">
+                <h2 th:class="|uk-card-title uk-text-truncate|"
+                    th:text="|パスワードの変更|"></h2>
+                <form th:action="@{/dashboard/configuration/password}"
+                      th:class="|uk-form-stacked|"
+                      th:method="|post|">
+                    <div th:class="|uk-margin|">
+                        <label th:class="|uk-form-label|"
+                               th:for="|currentPassword|"
+                               th:text="|現在のパスワード|"></label>
+                        <div th:class="|uk-form-controls|">
+                            <div th:class="|uk-inline uk-width-1-1|">
+                                <span th:class="|uk-form-icon|"
+                                      th:uk-icon="|icon: lock|"></span>
+                                <input th:autocomplete="|current-password|"
+                                       th:class="|uk-input|"
+                                       th:id="|currentPassword|"
+                                       th:name="|currentPassword|"
+                                       th:type="|password|">
+                            </div>
+                        </div>
+                    </div>
+                    <div th:class="|uk-margin|">
+                        <label th:class="|uk-form-label|"
+                               th:for="|newPassword|"
+                               th:text="|新しいパスワード|"></label>
+                        <div th:class="|uk-form-controls|">
+                            <div th:class="|uk-inline uk-width-1-1|">
+                                <span th:class="|uk-form-icon|"
+                                      th:uk-icon="|icon: lock|"></span>
+                                <input th:autocomplete="|new-password|"
+                                       th:class="|uk-input|"
+                                       th:id="|newPassword|"
+                                       th:name="|newPassword|"
+                                       th:type="|password|">
+                            </div>
+                        </div>
+                    </div>
+                    <div th:class="|uk-margin-top|">
+                        <div th:class="|uk-text-right|">
+                            <button th:class="|uk-button uk-button-primary|"
+                                    th:text="|変更|"
+                                    th:type="|submit|"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 <footer th:replace="fragment :: footer"></footer>
 </body>

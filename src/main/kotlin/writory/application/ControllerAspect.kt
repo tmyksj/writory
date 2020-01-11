@@ -19,7 +19,7 @@ class ControllerAspect {
         model?.addAttribute("form",
                 pjp.args.firstOrNull { it != null && (it::class.simpleName?.endsWith("Form") ?: false) })
         model?.addAttribute("user",
-                pjp.args.filterIsInstance<UserPrincipal>().firstOrNull())
+                pjp.args.filterIsInstance<UserPrincipal>().firstOrNull()?.userEntity)
 
         val retVal: Any? = pjp.proceed()
 
