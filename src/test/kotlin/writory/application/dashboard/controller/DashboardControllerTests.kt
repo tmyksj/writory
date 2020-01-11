@@ -24,6 +24,9 @@ import javax.servlet.Filter
 class DashboardControllerTests {
 
     @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+
+    @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
 
     @Autowired

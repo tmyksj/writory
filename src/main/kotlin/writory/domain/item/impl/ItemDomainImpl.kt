@@ -1,5 +1,6 @@
 package writory.domain.item.impl
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +20,7 @@ class ItemDomainImpl(
 ) : ItemDomain {
 
     override fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
-        val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
+        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
         val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
         return Pair(entity, sectionEntityList)
@@ -33,7 +34,7 @@ class ItemDomainImpl(
     }
 
     override fun scopeByUserIdDeleteById(userId: String, itemId: String) {
-        val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
+        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
 
         if (userId != entity.userId) {
             throw ItemNotFoundException()
@@ -47,7 +48,7 @@ class ItemDomainImpl(
     }
 
     override fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
-        val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
+        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
         val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
         if (userId != entity.userId) {
@@ -67,7 +68,7 @@ class ItemDomainImpl(
         val createSection: List<ItemSectionEntity> = itemSectionList.filter { it.first == null }.map { it.second }
         val modifySection: Map<String?, ItemSectionEntity> = itemSectionList.filter { it.first != null }.toMap()
 
-        val entity: ItemEntity = itemRepository.findById(item.first).orElse(null) ?: throw ItemModifyException()
+        val entity: ItemEntity = itemRepository.findByIdOrNull(item.first) ?: throw ItemModifyException()
         if (userId != entity.userId) {
             throw ItemModifyException()
         }

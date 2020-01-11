@@ -19,6 +19,9 @@ import java.util.*
 class UserDomainTests {
 
     @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+
+    @Autowired
     private lateinit var userDomain: UserDomain
 
     @Autowired

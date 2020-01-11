@@ -36,3 +36,23 @@ create table item_section
     foreign key (item_id) references item (id) on delete cascade on update cascade
 ) engine = InnoDB
   default charset utf8;
+
+create table privacy_policy
+(
+    id       varchar(36) not null,
+    body     text        not null,
+    created  timestamp   not null default 0,
+    modified timestamp   not null default 0,
+    primary key (id)
+) engine = InnoDB
+  default charset utf8;
+
+create table terms_of_service
+(
+    id       varchar(36) not null,
+    body     text        not null,
+    created  timestamp   not null default 0,
+    modified timestamp   not null default 0,
+    primary key (id)
+) engine = InnoDB
+  default charset utf8;
