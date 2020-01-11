@@ -1,5 +1,6 @@
 package writory.domain.item.impl
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -8,7 +9,6 @@ import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
 import writory.domain.item.exception.ItemNotFoundException
-import writory.domain.item.exception.ItemPermissionException
 import writory.domain.item.repository.ItemRepository
 import writory.domain.item.repository.ItemSectionRepository
 
@@ -19,35 +19,48 @@ class ItemDomainImpl(
         private val itemSectionRepository: ItemSectionRepository
 ) : ItemDomain {
 
+    override fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
+        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
+        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
-    override fun create(userId: String): ItemEntity {
+        return Pair(entity, sectionEntityList)
+    }
+
+    override fun scopeByUserIdCreate(userId: String): ItemEntity {
         return itemRepository.save(ItemEntity(
                 userId = userId,
                 title = ""
         ))
     }
 
-    override fun find(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
-        val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
-        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
+    override fun scopeByUserIdDeleteById(userId: String, itemId: String) {
+        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
 
-        return Pair(entity, sectionEntityList)
+        if (userId != entity.userId) {
+            throw ItemNotFoundException()
+        }
+
+        itemRepository.delete(entity)
     }
 
-    override fun find(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
-        val entity: ItemEntity = itemRepository.findById(itemId).orElse(null) ?: throw ItemNotFoundException()
+    override fun scopeByUserIdFindAllByUserId(userId: String): List<ItemEntity> {
+        return itemRepository.findAllByUserIdOrderByModifiedDesc(userId)
+    }
+
+    override fun scopeByUserIdFindById(userId: String, itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
+        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
         val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
 
         if (userId != entity.userId) {
-            throw ItemPermissionException()
+            throw ItemNotFoundException()
         }
 
         return Pair(entity, sectionEntityList)
     }
 
-    override fun modify(userId: String,
-                        item: Pair<String, ItemEntity>,
-                        itemSectionList: List<Pair<String?, ItemSectionEntity>>) {
+    override fun scopeByUserIdModify(userId: String,
+                                     item: Pair<String, ItemEntity>,
+                                     itemSectionList: List<Pair<String?, ItemSectionEntity>>) {
         if (itemSectionList.map { it.second.position }.toSet().size != itemSectionList.size) {
             throw ItemModifyException()
         }
@@ -55,7 +68,7 @@ class ItemDomainImpl(
         val createSection: List<ItemSectionEntity> = itemSectionList.filter { it.first == null }.map { it.second }
         val modifySection: Map<String?, ItemSectionEntity> = itemSectionList.filter { it.first != null }.toMap()
 
-        val entity: ItemEntity = itemRepository.findById(item.first).orElse(null) ?: throw ItemModifyException()
+        val entity: ItemEntity = itemRepository.findByIdOrNull(item.first) ?: throw ItemModifyException()
         if (userId != entity.userId) {
             throw ItemModifyException()
         }

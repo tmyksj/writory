@@ -9,7 +9,6 @@ import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
 import writory.domain.item.exception.ItemNotFoundException
-import writory.domain.item.exception.ItemPermissionException
 import writory.domain.item.repository.ItemRepository
 import writory.domain.item.repository.ItemSectionRepository
 import writory.domain.user.entity.UserEntity
@@ -41,8 +40,12 @@ class ItemDomainTests {
 
     private lateinit var userEntity: UserEntity
 
+    private lateinit var otherItemEntity: ItemEntity
+
+    private lateinit var otherUserEntity: UserEntity
+
     @BeforeEach
-    fun savesEntity() {
+    fun saves_entities() {
         userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
@@ -76,51 +79,83 @@ class ItemDomainTests {
                 body = "body",
                 star = true
         ))
-    }
 
-    @Test
-    fun createItemCreatesItem() {
-        val itemEntity: ItemEntity = itemDomain.create(userEntity.id!!)
-        Assertions.assertThat(itemRepository.findById(itemEntity.id!!)).isNotNull
-    }
-
-    @Test
-    fun findItemReturnsItem() {
-        val item0: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.find(itemEntity.id!!)
-        Assertions.assertThat(item0.second.size).isEqualTo(3)
-        Assertions.assertThat(item0.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
-
-        val item1: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.find(userEntity.id!!, itemEntity.id!!)
-        Assertions.assertThat(item1.second.size).isEqualTo(3)
-        Assertions.assertThat(item1.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
-    }
-
-    @Test
-    fun findItemThrowsItemNotFoundException() {
-        Assertions.assertThatThrownBy {
-            itemDomain.find(UUID.randomUUID().toString())
-        }.isInstanceOf(ItemNotFoundException::class.java)
-
-        Assertions.assertThatThrownBy {
-            itemDomain.find(userEntity.id!!, UUID.randomUUID().toString())
-        }.isInstanceOf(ItemNotFoundException::class.java)
-    }
-
-    @Test
-    fun findItemThrowsItemPermissionException() {
-        val otherUserEntity: UserEntity = userRepository.save(UserEntity(
+        otherUserEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
                 password = "password"
         ))
 
-        Assertions.assertThatThrownBy {
-            itemDomain.find(otherUserEntity.id!!, itemEntity.id!!)
-        }.isInstanceOf(ItemPermissionException::class.java)
+        otherItemEntity = itemRepository.save(ItemEntity(
+                userId = otherUserEntity.id,
+                title = "title"
+        ))
     }
 
     @Test
-    fun modifyItemModifiesItem() {
-        itemDomain.modify(userEntity.id!!,
+    fun findById_returns_item() {
+        val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(itemEntity.id!!)
+        Assertions.assertThat(item.second.size).isEqualTo(3)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
+    }
+
+    @Test
+    fun findById_throws_ItemNotFoundException_when_item_does_not_exists() {
+        Assertions.assertThatThrownBy {
+            itemDomain.findById(UUID.randomUUID().toString())
+        }.isInstanceOf(ItemNotFoundException::class.java)
+    }
+
+    @Test
+    fun scopeByUserIdCreate_creates_item() {
+        val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userEntity.id!!)
+        Assertions.assertThat(itemRepository.findById(itemEntity.id!!)).isNotNull
+    }
+
+    @Test
+    fun scopeByUserIdDeleteById_deletes_item() {
+        itemDomain.scopeByUserIdDeleteById(userEntity.id!!, itemEntity.id!!)
+        Assertions.assertThat(itemSectionRepository.findById(itemEntity.id!!).isEmpty).isTrue()
+    }
+
+    @Test
+    fun scopeByUserIdDeleteById_throws_ItemNotFoundException_when_item_does_not_exists() {
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdDeleteById(userEntity.id!!, UUID.randomUUID().toString())
+        }.isInstanceOf(ItemNotFoundException::class.java)
+    }
+
+    @Test
+    fun scopeByUserIdDeleteById_throws_ItemNotFoundException_when_other_user_tries_to_delete_item() {
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdDeleteById(otherUserEntity.id!!, itemEntity.id!!)
+        }.isInstanceOf(ItemNotFoundException::class.java)
+    }
+
+    @Test
+    fun scopeByUserIdFindById_returns_item() {
+        val item: Pair<ItemEntity, List<ItemSectionEntity>> =
+                itemDomain.scopeByUserIdFindById(userEntity.id!!, itemEntity.id!!)
+        Assertions.assertThat(item.second.size).isEqualTo(3)
+        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
+    }
+
+    @Test
+    fun scopeByUserIdFindById_throws_ItemNotFoundException_when_item_does_not_exists() {
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdFindById(userEntity.id!!, UUID.randomUUID().toString())
+        }.isInstanceOf(ItemNotFoundException::class.java)
+    }
+
+    @Test
+    fun scopeByUserIdFindById_throws_ItemNotFoundException_when_other_user_tries_to_find_item() {
+        Assertions.assertThatThrownBy {
+            itemDomain.scopeByUserIdFindById(otherUserEntity.id!!, itemEntity.id!!)
+        }.isInstanceOf(ItemNotFoundException::class.java)
+    }
+
+    @Test
+    fun scopeByUserIdModify_modifies_item() {
+        itemDomain.scopeByUserIdModify(userEntity.id!!,
                 Pair(itemEntity.id!!, itemEntity.copy(title = "title(modified)")),
                 listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy(header = "header(modified)")),
                         Pair(itemSectionEntity2.id, itemSectionEntity2.copy(header = "header(modified)", position = 1)),
@@ -133,37 +168,36 @@ class ItemDomainTests {
     }
 
     @Test
-    fun modifyItemThrowsItemModifyException() {
-        val otherUserEntity: UserEntity = userRepository.save(UserEntity(
-                email = "${UUID.randomUUID()}@example.com",
-                password = "password"
-        ))
-
-        val otherItemEntity: ItemEntity = itemRepository.save(ItemEntity(
-                userId = otherUserEntity.id,
-                title = "title"
-        ))
-
+    fun scopeByUserIdModify_throws_ItemModifyException_when_item_does_not_exists() {
         Assertions.assertThatThrownBy {
-            itemDomain.modify(userEntity.id!!,
+            itemDomain.scopeByUserIdModify(userEntity.id!!,
                     Pair(UUID.randomUUID().toString(), itemEntity.copy()),
                     listOf())
         }.isInstanceOf(ItemModifyException::class.java)
+    }
 
+    @Test
+    fun scopeByUserIdModify_throws_ItemModifyException_when_item_section_does_not_exists() {
         Assertions.assertThatThrownBy {
-            itemDomain.modify(userEntity.id!!,
+            itemDomain.scopeByUserIdModify(userEntity.id!!,
                     Pair(itemEntity.id!!, itemEntity.copy()),
                     listOf(Pair(UUID.randomUUID().toString(), itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
+    }
 
+    @Test
+    fun scopeByUserIdModify_throws_ItemModifyException_when_other_user_tries_to_modify_item() {
         Assertions.assertThatThrownBy {
-            itemDomain.modify(otherUserEntity.id!!,
+            itemDomain.scopeByUserIdModify(otherUserEntity.id!!,
                     Pair(itemEntity.id!!, itemEntity.copy()),
                     listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)
+    }
 
+    @Test
+    fun scopeByUserIdModify_throws_ItemModifyException_when_other_user_tries_to_modify_item_section() {
         Assertions.assertThatThrownBy {
-            itemDomain.modify(otherUserEntity.id!!,
+            itemDomain.scopeByUserIdModify(otherUserEntity.id!!,
                     Pair(otherItemEntity.id!!, otherItemEntity),
                     listOf(Pair(itemSectionEntity0.id, itemSectionEntity0.copy())))
         }.isInstanceOf(ItemModifyException::class.java)

@@ -5,4 +5,8 @@ import org.springframework.stereotype.Repository
 import writory.domain.item.entity.ItemEntity
 
 @Repository
-interface ItemRepository : JpaRepository<ItemEntity, String>
+interface ItemRepository : JpaRepository<ItemEntity, String> {
+
+    fun findAllByUserIdOrderByModifiedDesc(userId: String): List<ItemEntity>
+
+}
