@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -21,6 +22,9 @@ import javax.servlet.Filter
 
 @SpringBootTest
 class ItemControllerTests {
+
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
@@ -45,7 +49,7 @@ class ItemControllerTests {
     fun buildsEntity() {
         val userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
-                password = "password"
+                password = passwordEncoder.encode("password")
         ))
 
         itemEntity = itemRepository.save(ItemEntity(

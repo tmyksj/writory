@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.password.PasswordEncoder
 import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
@@ -17,6 +18,9 @@ import java.util.*
 
 @SpringBootTest
 class ItemDomainTests {
+
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     private lateinit var itemDomain: ItemDomain
@@ -48,7 +52,7 @@ class ItemDomainTests {
     fun saves_entities() {
         userEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
-                password = "password"
+                password = passwordEncoder.encode("password")
         ))
 
         itemEntity = itemRepository.save(ItemEntity(
@@ -82,7 +86,7 @@ class ItemDomainTests {
 
         otherUserEntity = userRepository.save(UserEntity(
                 email = "${UUID.randomUUID()}@example.com",
-                password = "password"
+                password = passwordEncoder.encode("password")
         ))
 
         otherItemEntity = itemRepository.save(ItemEntity(
