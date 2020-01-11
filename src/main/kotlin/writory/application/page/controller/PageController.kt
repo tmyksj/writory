@@ -5,11 +5,14 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import writory.domain.legal.LegalDomain
 import writory.domain.user.principal.UserPrincipal
 import javax.servlet.http.HttpServletResponse
 
 @Controller
-class PageController {
+class PageController(
+        private val legalDomain: LegalDomain
+) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/about"])
     fun getAbout(
@@ -26,6 +29,7 @@ class PageController {
             httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
+        model.addAttribute("text", legalDomain.findPrivacyPolicy())
         return "200:page/privacy-policy"
     }
 
@@ -35,6 +39,7 @@ class PageController {
             httpServletResponse: HttpServletResponse,
             model: Model
     ): String {
+        model.addAttribute("text", legalDomain.findTermsOfService())
         return "200:page/terms-of-service"
     }
 
