@@ -14,7 +14,6 @@ import writory.domain.user.exception.UserFoundException
 import writory.domain.user.exception.UserNotFoundException
 import writory.domain.user.principal.UserPrincipal
 import writory.domain.user.repository.UserRepository
-import java.lang.IllegalArgumentException
 
 @Component
 @Transactional(propagation = Propagation.REQUIRED)
