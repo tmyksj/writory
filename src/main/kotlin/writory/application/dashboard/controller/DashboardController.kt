@@ -16,16 +16,16 @@ import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
 import writory.domain.item.exception.ItemNotFoundException
-import writory.domain.user.UserDomain
-import writory.domain.user.exception.PasswordMismatchException
-import writory.domain.user.exception.UserFoundException
 import writory.domain.user.principal.UserPrincipal
+import writory.service.dashboard.DashboardService
+import writory.service.dashboard.exception.PasswordMismatchException
+import writory.service.dashboard.exception.UserFoundException
 import javax.servlet.http.HttpServletResponse
 
 @Controller
 class DashboardController(
-        private val itemDomain: ItemDomain,
-        private val userDomain: UserDomain
+        private val dashboardService: DashboardService,
+        private val itemDomain: ItemDomain
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/configuration"])
@@ -105,7 +105,7 @@ class DashboardController(
         }
 
         return try {
-            userDomain.modifyEmail(userPrincipal.userEntity.id!!, form.email!!)
+            dashboardService.modifyEmail(userPrincipal, form.email!!)
             "302:/dashboard/configuration"
         } catch (e: UserFoundException) {
             "400:dashboard/configuration"
@@ -125,7 +125,7 @@ class DashboardController(
         }
 
         return try {
-            userDomain.modifyPassword(userPrincipal.userEntity.id!!, form.currentPassword!!, form.newPassword!!)
+            dashboardService.modifyPassword(userPrincipal, form.currentPassword!!, form.newPassword!!)
             "302:/dashboard/configuration"
         } catch (e: PasswordMismatchException) {
             "400:dashboard/configuration"
