@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import writory.domain.user.entity.UserEntity
@@ -97,6 +98,19 @@ class UserDomainTests {
         Assertions.assertThatThrownBy {
             userDomain.modifyPassword(UUID.randomUUID().toString(), "password", "modified")
         }.isInstanceOf(UserNotFoundException::class.java)
+    }
+
+    @Test
+    fun reloadUser_reloads_entity() {
+        val principal: UserPrincipal = userDomain.loadUserByUsername(userEntity.email) as UserPrincipal
+
+        val entity: UserEntity = userRepository.findByIdOrNull(userEntity.id)!!
+        entity.email = "${UUID.randomUUID()}@example.com"
+        userRepository.save(entity)
+
+        userDomain.reloadUser(principal)
+
+        Assertions.assertThat(principal.userEntity.email).isEqualTo(entity.email)
     }
 
     @Test
