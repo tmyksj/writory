@@ -51,8 +51,7 @@ class UserDomainImpl(
             throw IllegalArgumentException()
         }
 
-        userDetails.userEntity = userRepository.findByIdOrNull(userDetails.id)
-                ?: throw UsernameNotFoundException("user principal not found")
+        userDetails.userEntity = userRepository.findByIdOrNull(userDetails.id) ?: throw UserNotFoundException()
     }
 
     override fun signUp(email: String, passwordRaw: String) {
