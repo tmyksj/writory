@@ -7,6 +7,8 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import writory.application.dashboard.form.ConfigurationEmailForm
+import writory.application.dashboard.form.ConfigurationPasswordForm
 import writory.application.dashboard.form.ItemDeleteForm
 import writory.application.dashboard.form.ItemModifyForm
 import writory.domain.item.ItemDomain
@@ -15,12 +17,25 @@ import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.exception.ItemModifyException
 import writory.domain.item.exception.ItemNotFoundException
 import writory.domain.user.principal.UserPrincipal
+import writory.service.dashboard.DashboardService
+import writory.service.dashboard.exception.PasswordMismatchException
+import writory.service.dashboard.exception.UserFoundException
 import javax.servlet.http.HttpServletResponse
 
 @Controller
 class DashboardController(
+        private val dashboardService: DashboardService,
         private val itemDomain: ItemDomain
 ) {
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/configuration"])
+    fun getConfiguration(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            httpServletResponse: HttpServletResponse,
+            model: Model
+    ): String {
+        return "200:dashboard/configuration"
+    }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard"])
     fun getIndex(
@@ -74,6 +89,46 @@ class DashboardController(
         } catch (e: ItemNotFoundException) {
             model.addAttribute("notFound", true)
             "400:dashboard/item-modify"
+        }
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/configuration/email"])
+    fun postConfigurationEmail(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            @Validated form: ConfigurationEmailForm,
+            bindingResult: BindingResult,
+            httpServletResponse: HttpServletResponse,
+            model: Model
+    ): String {
+        if (bindingResult.hasErrors()) {
+            return "400:dashboard/configuration"
+        }
+
+        return try {
+            dashboardService.modifyEmail(userPrincipal, form.email!!)
+            "302:/dashboard/configuration"
+        } catch (e: UserFoundException) {
+            "400:dashboard/configuration"
+        }
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/dashboard/configuration/password"])
+    fun postConfigurationPassword(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            @Validated form: ConfigurationPasswordForm,
+            bindingResult: BindingResult,
+            httpServletResponse: HttpServletResponse,
+            model: Model
+    ): String {
+        if (bindingResult.hasErrors()) {
+            return "400:dashboard/configuration"
+        }
+
+        return try {
+            dashboardService.modifyPassword(userPrincipal, form.currentPassword!!, form.newPassword!!)
+            "302:/dashboard/configuration"
+        } catch (e: PasswordMismatchException) {
+            "400:dashboard/configuration"
         }
     }
 

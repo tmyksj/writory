@@ -11,11 +11,14 @@
 <header th:replace="fragment :: header"></header>
 <main th:class="|uk-container|"
       th:uk-height-viewport="|expand: true|">
-    <ul th:class="|uk-margin uk-margin-large-top|"
-        th:uk-tab="|uk-tab|">
+    <ul th:class="|uk-margin uk-margin-large-top uk-tab|">
         <li th:class="|uk-active|">
             <a th:href="@{/dashboard/item}"
                th:text="|投稿|"></a>
+        </li>
+        <li>
+            <a th:href="@{/dashboard/configuration}"
+               th:text="|設定|"></a>
         </li>
     </ul>
     <form th:action="@{/dashboard/item}"
@@ -30,12 +33,12 @@
         <div th:class="|uk-width-1-1 uk-width-1-2@m|"
              th:each="item : ${itemList}">
             <div th:class="|uk-card uk-card-body uk-card-default uk-card-small|">
-                <h3 th:class="|uk-margin-remove uk-text-truncate|"
+                <h2 th:class="|uk-card-title uk-margin-small-bottom uk-text-truncate|"
                     th:if="${item.title} == ''"
-                    th:text="|&nbsp;|"></h3>
-                <h3 th:class="|uk-margin-remove uk-text-truncate|"
+                    th:text="|&nbsp;|"></h2>
+                <h2 th:class="|uk-card-title uk-margin-small-bottom uk-text-truncate|"
                     th:if="${item.title} != ''"
-                    th:text="${item.title}"></h3>
+                    th:text="${item.title}"></h2>
                 <div th:class="|uk-flex uk-flex-between uk-flex-bottom uk-text-right|">
                     <span th:class="|uk-text-meta|"
                           th:text="${#temporals.format(item.modified, 'yyyy/MM/dd HH:mm')}"></span>

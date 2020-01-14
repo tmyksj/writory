@@ -66,6 +66,13 @@ class DashboardControllerTests {
     }
 
     @Test
+    fun getConfiguration_responds_200() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/configuration")
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
     fun getIndex_responds_302() {
         mockMvc.perform(MockMvcRequestBuilders.get("/dashboard")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
@@ -90,6 +97,44 @@ class DashboardControllerTests {
     fun getItemModify_responds_400_when_item_does_not_exists() {
         mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/${UUID.randomUUID()}/modify")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @Test
+    fun postConfigurationEmail_responds_302() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("email", "${UUID.randomUUID()}@example.com"))
+                .andExpect(MockMvcResultMatchers.status().isFound)
+    }
+
+    @Test
+    fun postConfigurationEmail_responds_400_when_params_are_invalid() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("email", "[invalid]email"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @Test
+    fun postConfigurationPassword_responds_302() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/password")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("currentPassword", "password")
+                .param("newPassword", "newPassword"))
+                .andExpect(MockMvcResultMatchers.status().isFound)
+    }
+
+    @Test
+    fun postConfigurationPassword_responds_400_when_params_are_invalid() {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dashboard/configuration/password")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity)))
+                .param("currentPassword", "wrongPassword")
+                .param("newPassword", "newPassword"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest)
     }
 
