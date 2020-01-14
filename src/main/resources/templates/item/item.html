@@ -14,7 +14,7 @@
     <th:block th:if="${httpStatusCode200}">
         <div th:class="|uk-margin-large-top|">
             <div th:class="|uk-flex uk-flex-bottom uk-heading-divider|">
-                <h2 th:class="|uk-flex-1 uk-margin-remove|"
+                <h2 th:class="|uk-margin-remove uk-text-break uk-width-expand|"
                     th:text="${item.title}"></h2>
                 <a th:class="|uk-flex-none uk-margin-left uk-text-muted|"
                    th:href="@{/item/{id}?all(id=${form.id})}"
@@ -24,17 +24,18 @@
         </div>
         <div th:class="|uk-margin-medium|"
              th:each="section : ${itemSectionList}">
-            <h3 th:class="|uk-heading-divider uk-flex uk-flex-bottom|">
-                <span th:class="|uk-flex-1|"
-                      th:text="${section.header}"></span>
+            <div th:class="|uk-heading-divider uk-flex uk-flex-bottom|">
+                <h3 th:class="|uk-margin-remove uk-text-break uk-width-expand|"
+                    th:text="${section.header}"></h3>
                 <span th:class="|uk-flex-none uk-margin-left|"
                       th:if="${section.star}"
                       th:uk-icon="|icon: star|"></span>
                 <span th:class="|uk-flex-none uk-margin-left|"
                       th:if="${!section.star}"
                       th:uk-icon="|icon: minus|"></span>
-            </h3>
-            <div th:text="${section.body}"></div>
+            </div>
+            <div th:class="|uk-text-break|"
+                 th:text="${section.body}"></div>
         </div>
     </th:block>
     <th:block th:if="${httpStatusCode404}">
