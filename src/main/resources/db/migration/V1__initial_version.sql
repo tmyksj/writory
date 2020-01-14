@@ -8,7 +8,7 @@ create table user
     primary key (id),
     unique key (email)
 ) engine = InnoDB
-  default charset utf8;
+  default charset utf8mb4;
 
 create table item
 (
@@ -20,7 +20,7 @@ create table item
     primary key (id),
     foreign key (user_id) references user (id) on delete cascade on update cascade
 ) engine = InnoDB
-  default charset utf8;
+  default charset utf8mb4;
 
 create table item_section
 (
@@ -35,7 +35,7 @@ create table item_section
     primary key (id),
     foreign key (item_id) references item (id) on delete cascade on update cascade
 ) engine = InnoDB
-  default charset utf8;
+  default charset utf8mb4;
 
 create table privacy_policy
 (
@@ -45,7 +45,7 @@ create table privacy_policy
     modified timestamp   not null default 0,
     primary key (id)
 ) engine = InnoDB
-  default charset utf8;
+  default charset utf8mb4;
 
 create table terms_of_service
 (
@@ -55,4 +55,4 @@ create table terms_of_service
     modified timestamp   not null default 0,
     primary key (id)
 ) engine = InnoDB
-  default charset utf8;
+  default charset utf8mb4;

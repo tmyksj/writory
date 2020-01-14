@@ -13,7 +13,7 @@ import javax.validation.constraints.Size
 data class PrivacyPolicyEntity(
 
         @field:NotNull
-        @field:Size(max = 21844, min = 0)
+        @field:Size(max = 16383, min = 0)
         var body: String? = null
 
 ) {

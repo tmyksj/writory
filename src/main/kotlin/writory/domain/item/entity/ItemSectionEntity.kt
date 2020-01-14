@@ -22,7 +22,7 @@ data class ItemSectionEntity(
         var header: String? = null,
 
         @field:NotNull
-        @field:Size(max = 21844, min = 0)
+        @field:Size(max = 16383, min = 0)
         var body: String? = null,
 
         @field:NotNull
