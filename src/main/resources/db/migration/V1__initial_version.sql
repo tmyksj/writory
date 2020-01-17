@@ -37,6 +37,18 @@ create table item_section
 ) engine = InnoDB
   default charset utf8mb4;
 
+create table item_tag
+(
+    id       varchar(36)  not null,
+    item_id  varchar(36)  not null,
+    value    varchar(255) not null,
+    created  timestamp    not null default 0,
+    modified timestamp    not null default 0,
+    primary key (id),
+    foreign key (item_id) references item (id) on delete cascade on update cascade
+) engine = InnoDB
+  default charset utf8mb4;
+
 create table privacy_policy
 (
     id       varchar(36) not null,
