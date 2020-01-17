@@ -1,4 +1,4 @@
-package writory.application.item.form
+package writory.application.dashboard.form
 
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size

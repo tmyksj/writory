@@ -5,8 +5,6 @@ import writory.domain.item.entity.ItemSectionEntity
 
 interface ItemDomain {
 
-    fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>>
-
     fun scopeByUserIdCreate(userId: String): ItemEntity
 
     fun scopeByUserIdDeleteById(userId: String, itemId: String)

@@ -19,13 +19,6 @@ class ItemDomainImpl(
         private val itemSectionRepository: ItemSectionRepository
 ) : ItemDomain {
 
-    override fun findById(itemId: String): Pair<ItemEntity, List<ItemSectionEntity>> {
-        val entity: ItemEntity = itemRepository.findByIdOrNull(itemId) ?: throw ItemNotFoundException()
-        val sectionEntityList: List<ItemSectionEntity> = itemSectionRepository.findAllByItemIdOrderByPositionAsc(itemId)
-
-        return Pair(entity, sectionEntityList)
-    }
-
     override fun scopeByUserIdCreate(userId: String): ItemEntity {
         return itemRepository.save(ItemEntity(
                 userId = userId,

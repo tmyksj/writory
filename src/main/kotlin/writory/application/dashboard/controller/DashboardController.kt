@@ -7,10 +7,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import writory.application.dashboard.form.ConfigurationEmailForm
-import writory.application.dashboard.form.ConfigurationPasswordForm
-import writory.application.dashboard.form.ItemDeleteForm
-import writory.application.dashboard.form.ItemModifyForm
+import writory.application.dashboard.form.*
 import writory.domain.item.ItemDomain
 import writory.domain.item.entity.ItemEntity
 import writory.domain.item.entity.ItemSectionEntity
@@ -46,8 +43,26 @@ class DashboardController(
         return "302:/dashboard/item"
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item/{id}"])
     fun getItem(
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            form: ItemForm,
+            httpServletResponse: HttpServletResponse,
+            model: Model
+    ): String {
+        return try {
+            val item: Pair<ItemEntity, List<ItemSectionEntity>> =
+                    itemDomain.scopeByUserIdFindById(userPrincipal.userEntity.id!!, form.id!!)
+            model.addAttribute("item", item.first)
+            model.addAttribute("itemSectionList", item.second.filter { form.all != null || it.star == true })
+            "200:dashboard/item"
+        } catch (e: ItemNotFoundException) {
+            "404:dashboard/item"
+        }
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item"])
+    fun getItemList(
             @AuthenticationPrincipal userPrincipal: UserPrincipal,
             httpServletResponse: HttpServletResponse,
             model: Model
@@ -55,7 +70,7 @@ class DashboardController(
         val itemEntityList: List<ItemEntity> = itemDomain.scopeByUserIdFindAllByUserId(userPrincipal.userEntity.id!!)
         model.addAttribute("itemList", itemEntityList)
 
-        return "200:dashboard/item"
+        return "200:dashboard/item-list"
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/dashboard/item/{id}/modify"])

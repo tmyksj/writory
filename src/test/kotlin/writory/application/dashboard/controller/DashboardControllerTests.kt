@@ -13,7 +13,9 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import writory.domain.item.entity.ItemEntity
+import writory.domain.item.entity.ItemSectionEntity
 import writory.domain.item.repository.ItemRepository
+import writory.domain.item.repository.ItemSectionRepository
 import writory.domain.user.entity.UserEntity
 import writory.domain.user.principal.UserPrincipal
 import writory.domain.user.repository.UserRepository
@@ -36,6 +38,9 @@ class DashboardControllerTests {
 
     @Autowired
     private lateinit var itemRepository: ItemRepository
+
+    @Autowired
+    private lateinit var itemSectionRepository: ItemSectionRepository
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -63,6 +68,14 @@ class DashboardControllerTests {
                 userId = userEntity.id,
                 title = "title"
         ))
+
+        itemSectionRepository.save(ItemSectionEntity(
+                itemId = itemEntity.id,
+                position = 0,
+                header = "header",
+                body = "body",
+                star = true
+        ))
     }
 
     @Test
@@ -81,6 +94,20 @@ class DashboardControllerTests {
 
     @Test
     fun getItem_responds_200() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/${itemEntity.id}")
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    fun getItem_responds_404_when_item_does_not_exists() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item/${UUID.randomUUID()}")
+                .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
+                .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @Test
+    fun getItemList_responds_200() {
         mockMvc.perform(MockMvcRequestBuilders.get("/dashboard/item")
                 .with(SecurityMockMvcRequestPostProcessors.user(UserPrincipal(userEntity))))
                 .andExpect(MockMvcResultMatchers.status().isOk)
