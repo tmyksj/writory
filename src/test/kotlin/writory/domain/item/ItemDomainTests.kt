@@ -136,6 +136,11 @@ class ItemDomainTests {
     }
 
     @Test
+    fun scopeByUserIdFindAllByUserId_returns_item_list() {
+        Assertions.assertThat(itemDomain.scopeByUserIdFindAllByUserId(userEntity.id!!).size).isEqualTo(1)
+    }
+
+    @Test
     fun scopeByUserIdFindById_returns_item() {
         val item: Pair<ItemEntity, List<ItemSectionEntity>> =
                 itemDomain.scopeByUserIdFindById(userEntity.id!!, itemEntity.id!!)
