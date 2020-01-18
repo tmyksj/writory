@@ -18,7 +18,6 @@ class WebSecurityConfiguration(
                 .antMatchers("/about").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("/item/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/privacy-policy").permitAll()
                 .antMatchers("/sign-in").permitAll()

@@ -96,20 +96,6 @@ class ItemDomainTests {
     }
 
     @Test
-    fun findById_returns_item() {
-        val item: Pair<ItemEntity, List<ItemSectionEntity>> = itemDomain.findById(itemEntity.id!!)
-        Assertions.assertThat(item.second.size).isEqualTo(3)
-        Assertions.assertThat(item.second.map { it.position }).isEqualTo(listOf(0, 1, 2))
-    }
-
-    @Test
-    fun findById_throws_ItemNotFoundException_when_item_does_not_exists() {
-        Assertions.assertThatThrownBy {
-            itemDomain.findById(UUID.randomUUID().toString())
-        }.isInstanceOf(ItemNotFoundException::class.java)
-    }
-
-    @Test
     fun scopeByUserIdCreate_creates_item() {
         val itemEntity: ItemEntity = itemDomain.scopeByUserIdCreate(userEntity.id!!)
         Assertions.assertThat(itemRepository.findById(itemEntity.id!!)).isNotNull
